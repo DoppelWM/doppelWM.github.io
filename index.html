@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Doppel: Render the Robot, Generate the World</title>
+  <meta name="description" content="Doppel is one video world model for many robots. It conditions on camera-aligned renderings of the robot's future motion together with numerical actions, and is trained jointly on DROID, RoboMIND and Bridge.">
+  <meta name="author" content="Yash Jangir, Karan Mirakhor, Renos Zabounidis, Muhammad Zubair Irshad, Sergey Zakharov, Yonatan Bisk, Homanga Bharadhwaj">
+  <meta property="og:title" content="Doppel: Render the Robot, Generate the World">
+  <meta property="og:description" content="One video world model across embodiments, conditioned on future robot renderings and actions.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/images/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#151a17">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='11' y='4' width='17' height='17' rx='6' fill='%23b2bab5'/%3E%3Crect x='4' y='11' width='17' height='17' rx='6' fill='%236da4f6'/%3E%3C/svg%3E">
+  <link rel="preload" href="fonts/instrument-serif-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-serif-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!-- The film's signature backdrop: its blurred, dimmed video wall (one seamless 5.3 s period). -->
+<div class="backdrop" aria-hidden="true">
+  <video muted loop playsinline preload="none" poster="assets/images/backdrop.jpg" data-src="assets/videos/backdrop.mp4" tabindex="-1"></video>
+</div>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top" aria-label="Doppel, back to top">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="ghost" x="11" y="4" width="17" height="17" rx="6"/><rect class="solid" x="4" y="11" width="17" height="17" rx="6"/></svg>
+      Doppel
+    </a>
+    <button class="icon-button menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <nav id="site-nav" aria-label="Sections">
+      <a href="#abstract">Abstract</a>
+      <a href="#videos">Videos</a>
+      <a href="#extrinsics">Extrinsics</a>
+      <a href="#method">Method</a>
+      <a href="#data">Data</a>
+      <a href="#results">Results</a>
+      <a href="#citation">Citation</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+
+  <!-- Hero -->
+  <div class="hero" id="top">
+    <div class="hero-text">
+      <h1>Render the Robot, <em class="line2">Generate the World</em></h1>
+      <p class="subtitle">One video world model across embodiments</p>
+      <p class="authors">
+        <span>Yash Jangir<sup>1</sup></span>
+        <span>Karan Mirakhor<sup>2</sup></span>
+        <span>Renos Zabounidis<sup>2</sup></span>
+        <span>Muhammad Zubair Irshad<sup>3</sup></span>
+        <span>Sergey Zakharov<sup>3</sup></span>
+        <span>Yonatan Bisk<sup>2</sup></span>
+        <span>Homanga Bharadhwaj<sup>1</sup></span>
+      </p>
+      <p class="affiliations">
+        <span><sup>1</sup>Johns Hopkins University</span>
+        <span><sup>2</sup>Carnegie Mellon University</span>
+        <span><sup>3</sup>Toyota Research Institute</span>
+      </p>
+      <div class="links">
+        <span class="pill" aria-disabled="true" role="link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Paper <small>soon</small></span>
+        <span class="pill" aria-disabled="true" role="link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg>Code <small>soon</small></span>
+        <span class="pill" aria-disabled="true" role="link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h3l2-3h8l2 3h3v13H3z"/><circle cx="12" cy="13" r="4"/></svg>Camera extrinsics <small>soon</small></span>
+        <a class="pill primary" href="#videos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Videos</a>
+        <a class="pill" href="#citation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h4v6H7zM13 7h4v6h-4zM7 13c0 2-1 3-2 4M13 13c0 2-1 3-2 4"/></svg>BibTeX</a>
+      </div>
+    </div>
+
+    <figure class="hero-film" data-autoplay-film>
+      <div class="film-frame glow">
+        <video muted loop playsinline preload="metadata" poster="assets/images/intro-poster.jpg" data-src="assets/videos/intro.mp4" data-src-small="assets/videos/intro-mobile.mp4" aria-label="Intro film: many robot and human embodiments, each robot rendered along its planned motion from the recorded camera, Doppel's predicted futures for Franka, WidowX and UR5e, and one model for every embodiment"></video>
+      </div>
+      <figcaption>Predictions are Doppel's for Franka, WidowX and UR5e. Clips of the other embodiments show recorded video.</figcaption>
+    </figure>
+  </div>
+
+  <!-- Abstract -->
+  <section id="abstract" class="abstract">
+    <h2>Abstract</h2>
+    <p>Video world models usually learn how a robot moves from raw action vectors. Doppel renders the robot along its planned joint trajectory from the recorded camera and conditions one shared video model on these renderings together with the actions; camera poses for datasets that lack them are recovered automatically from the videos. Trained jointly on Franka, UR5e and WidowX data, it improves PSNR over per-robot action-only experts by 1.31 dB on unseen trajectories and 1.36 dB out of distribution.</p>
+  </section>
+
+  <!-- Conditioning: the usual action-conditioned model against Doppel on one clip -->
+  <section id="conditioning">
+    <div class="section-head">
+      <div><h2>Actions alone, or the rendered robot</h2></div>
+      <p>The usual way to make a video model action-conditioned is to give it the action vectors: here the UR5e's six joint angles and gripper value at each of 17 frames. Doppel also renders the robot along the same actions, from the recorded camera, and conditions on the rendering and the actions together. Both models start from the same first frame, in a scene whose objects were held out from training.</p>
+    </div>
+    <div class="card mv" data-motivation>
+      <div class="mv-grid">
+        <figure class="mv-first">
+          <figcaption class="panel-label">First frame</figcaption>
+          <div class="mv-frame"><div class="sprite" data-sprite="recording" data-fixed="0" role="img" aria-label="The first recorded frame: a UR5e above a table with a basket, a green vegetable and other objects"></div></div>
+        </figure>
+        <div class="mv-row action">
+          <div class="mv-head"><b>Action-conditioned</b><span>Action-only expert, trained on UR5e data only</span></div>
+          <figure class="mv-cond">
+            <figcaption class="panel-label">Actions, 8 per frame</figcaption>
+            <div class="mv-frame mv-actions" data-actions role="img" aria-label="The joint and gripper values for each of the 17 frames"></div>
+          </figure>
+          <div class="mv-model" aria-hidden="true"><span>Video model</span></div>
+          <figure class="mv-pred">
+            <figcaption class="panel-label">Prediction</figcaption>
+            <div class="mv-frame"><div class="sprite" data-sprite="action" role="img" aria-label="Action-only expert prediction"></div></div>
+          </figure>
+        </div>
+        <div class="mv-row doppel">
+          <div class="mv-head"><b>Render-conditioned</b><span>Doppel, one model for Franka, UR5e and WidowX</span></div>
+          <figure class="mv-cond">
+            <figcaption class="panel-label">Rendered robot + actions</figcaption>
+            <div class="mv-frame"><div class="sprite" data-sprite="render" role="img" aria-label="The UR5e rendered along the same actions from the recorded camera"></div></div>
+          </figure>
+          <div class="mv-model" aria-hidden="true"><span>Video model</span></div>
+          <figure class="mv-pred">
+            <figcaption class="panel-label">Prediction</figcaption>
+            <div class="mv-frame"><div class="sprite" data-sprite="doppel" role="img" aria-label="Doppel prediction"></div></div>
+          </figure>
+        </div>
+        <figure class="mv-rec">
+          <figcaption class="panel-label">Recording</figcaption>
+          <div class="mv-frame"><div class="sprite" data-sprite="recording" role="img" aria-label="The recording"></div></div>
+        </figure>
+      </div>
+      <div class="studio-bar mv-bar">
+        <button class="ctrl" type="button" data-mv-step="-1" aria-label="Previous frame" title="Previous frame"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="fill" d="M7 5h2v14H7zM19 5v14l-9-7z"/></svg></button>
+        <button class="ctrl play" type="button" data-mv-play data-playing="false" aria-label="Play" title="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="fill i-play" d="M8 5v14l11-7z"/><path class="fill i-pause" d="M6.5 5h4v14h-4zm7 0h4v14h-4z"/></svg></button>
+        <button class="ctrl" type="button" data-mv-step="1" aria-label="Next frame" title="Next frame"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="fill" d="M15 5h2v14h-2zM5 5v14l9-7z"/></svg></button>
+        <div class="frame-scrub"><div class="frame-ticks" aria-hidden="true" data-mv-ticks></div><input type="range" min="0" max="16" step="1" value="0" data-mv-scrub aria-label="Frame"></div>
+        <span class="frame-count" data-mv-count>Frame 00 / 16</span>
+      </div>
+      <p class="note">By the last frame the expert has raised the gripper but left the vegetable on the table; Doppel's prediction lifts it, as in the recording. Same first frame, same actions, same pretrained video backbone. Predictions are shown at the recording's 4:3 shape.</p>
+    </div>
+  </section>
+
+  <!-- Videos -->
+  <section id="videos">
+    <div class="section-head">
+      <div><h2>Videos</h2></div>
+      <p>Each comparison starts from the same image and the same actions. The baseline is that robot's action-only expert: the same backbone, trained on that robot's data alone and conditioned on actions only. Doppel is one model for all three robots.</p>
+    </div>
+
+    <figure class="claim" data-autoplay-film>
+      <div class="film-frame glow">
+        <video muted loop playsinline preload="none" poster="assets/images/claim-object-motion-poster.jpg" data-src="assets/videos/claim-object-motion.mp4" aria-label="Object motion: ground truth, action-only and Doppel for a WidowX lifting a fruit in an unseen toy kitchen and a UR5e lifting a vegetable, then moving-object PSNR and SCS"></video>
+      </div>
+      <figcaption class="claim-caption">
+        <p>A WidowX in the held-out toy kitchen and a UR5e with unseen objects. The action-only expert moves the arm but leaves the object in place. On the toy-kitchen test set, moving-object PSNR goes from 21.50 to 24.96 dB and SCS from 0.776 to 0.842.</p>
+      </figcaption>
+    </figure>
+
+    <div class="card studio" data-studio>
+      <div class="studio-head">
+        <div>
+          <h3 data-studio-title>—</h3>
+          <div class="studio-meta"><span class="tag" data-studio-tag></span><span class="look" data-studio-look></span></div>
+        </div>
+        <div class="segmented" role="group" aria-label="View" data-studio-mode>
+          <button type="button" aria-pressed="true" data-mode="side">Side by side</button>
+          <button type="button" aria-pressed="false" data-mode="wipe">Wipe</button>
+        </div>
+      </div>
+      <div class="studio-stage" data-mode="side" style="--wipe: 50%">
+        <figure class="panel gt"><figcaption class="panel-label">Ground truth</figcaption><div class="frame"><video muted playsinline preload="auto" aria-label="Ground truth"></video></div></figure>
+        <figure class="panel action"><figcaption class="panel-label">Action-only expert</figcaption><div class="frame"><video muted playsinline preload="auto" aria-label="Action-only expert prediction"></video></div></figure>
+        <figure class="panel doppel"><figcaption class="panel-label">Doppel</figcaption><div class="frame"><video muted playsinline preload="auto" aria-label="Doppel prediction"></video></div></figure>
+        <div class="wipe-handle" data-wipe aria-hidden="true"><div class="split-line"><span><svg viewBox="0 0 24 24"><path d="m9 6-6 6 6 6M15 6l6 6-6 6"/></svg></span></div></div>
+      </div>
+      <div class="studio-bar">
+        <button class="ctrl" type="button" data-step="-1" aria-label="Previous frame" title="Previous frame"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="fill" d="M7 5h2v14H7zM19 5v14l-9-7z"/></svg></button>
+        <button class="ctrl play" type="button" data-play data-playing="false" aria-label="Play" title="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="fill i-play" d="M8 5v14l11-7z"/><path class="fill i-pause" d="M6.5 5h4v14h-4zm7 0h4v14h-4z"/></svg></button>
+        <button class="ctrl" type="button" data-step="1" aria-label="Next frame" title="Next frame"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="fill" d="M15 5h2v14h-2zM5 5v14l9-7z"/></svg></button>
+        <div class="frame-scrub"><div class="frame-ticks" aria-hidden="true" data-ticks></div><input type="range" min="0" max="16" step="1" value="0" data-scrub aria-label="Frame"></div>
+        <span class="frame-count" data-count>Frame 0 / 16</span>
+        <button class="speed" type="button" data-speed aria-label="Playback speed">1×</button>
+      </div>
+    </div>
+
+    <div class="browser">
+      <div class="browser-bar">
+        <div class="group" role="group" aria-label="Robot" data-browse-dataset>
+          <button class="chip" type="button" aria-pressed="false" data-dataset="droid">DROID · Franka</button>
+          <button class="chip" type="button" aria-pressed="false" data-dataset="bridge">Bridge · WidowX</button>
+          <button class="chip" type="button" aria-pressed="true" data-dataset="robomind">RoboMIND · UR5e</button>
+        </div>
+        <div class="segmented" role="group" aria-label="Evaluation split" data-browse-split>
+          <button type="button" aria-pressed="true" data-split="ood">Out of distribution</button>
+          <button type="button" aria-pressed="false" data-split="val">Unseen trajectories</button>
+        </div>
+      </div>
+      <p class="context" data-browse-context role="status"></p>
+      <div class="clips" data-clips></div>
+    </div>
+  </section>
+
+  <!-- Camera extrinsics -->
+  <section id="extrinsics">
+    <div class="section-head">
+      <div><h2>Camera extrinsics</h2></div>
+      <p>Rendering the robot from the recorded viewpoint needs the camera's pose relative to the robot base. DROID ships it; RoboMIND and Bridge do not. We recover it from the videos: the robot's 3D Gaussian model is rendered at the logged joint angles, and the camera pose is optimised until the rendering lines up with the recording. No calibration target is used.</p>
+    </div>
+
+    <figure class="card xt-arch">
+      <div class="xt-arch-scroll"><svg class="diagram xt-diagram" data-diagram="extrinsics" role="img" aria-label="The calibration loop: the robot model is rendered at the logged joint angles from the current camera pose, compared with the recorded video on RGB, optical flow and DINOv2 features, and the camera pose is updated by a gradient step; the best pose is kept and reused for the whole recording session"></svg></div>
+      <figcaption class="xt-explain" data-xt-explain aria-live="polite"></figcaption>
+    </figure>
+
+    <div class="xt-row">
+      <figure class="card xt-run">
+        <h3>One run, step by step</h3>
+        <div class="calib" data-calib>
+          <div class="mv-frame"><div class="sprite" data-calib-sprite role="img" aria-label="A WidowX clip with the robot rendered over it in blue at the camera pose of the current optimisation step"></div></div>
+          <div class="calib-bar">
+            <button class="ctrl play" type="button" data-calib-play data-playing="false" aria-label="Play" title="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="fill i-play" d="M8 5v14l11-7z"/><path class="fill i-pause" d="M6.5 5h4v14h-4zm7 0h4v14h-4z"/></svg></button>
+            <label class="calib-range"><span class="visually-hidden">Optimisation step</span><input type="range" min="0" max="24" step="1" value="0" data-calib-range></label>
+          </div>
+          <p class="calib-readout" data-calib-readout aria-live="polite"></p>
+        </div>
+        <figcaption class="note">One WidowX clip, calibrated again from a deliberately perturbed start and recorded at each step for this page. Blue: the robot rendered at its logged joints from the current camera estimate. Drag the slider to step through it.</figcaption>
+      </figure>
+      <div class="card xt-counts">
+        <h3>Coverage</h3>
+        <table class="xt-table">
+          <caption class="visually-hidden">Demonstrations and camera poses per robot, and where the poses come from.</caption>
+          <thead><tr><th scope="col">Robot</th><th scope="col">Demos</th><th scope="col">Poses</th><th scope="col">Source</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Franka <span>DROID</span></th><td>19,837</td><td>1,028</td><td>provided with the dataset</td></tr>
+            <tr><th scope="row">UR5e <span>RoboMIND</span></th><td>17,588</td><td>49</td><td>recovered, one per session</td></tr>
+            <tr><th scope="row">WidowX <span>Bridge</span></th><td>14,824</td><td>56</td><td>recovered, one per session</td></tr>
+          </tbody>
+          <tfoot><tr><th scope="row">Total</th><td>52,249</td><td>1,133</td><td>105 recovered, for 32,412 demos</td></tr></tfoot>
+        </table>
+        <p class="note">We treat the camera as fixed within a recording session, so one recovered pose serves every demonstration recorded in it. Intrinsics: DROID's own ZED values, the RealSense D435i values for RoboMIND, and MoGe-estimated focal lengths for Bridge. A few sessions with poor calibrations were left out of the corpus. We will release extrinsics and intrinsics for all 52,249 demonstrations, with the calibration code.</p>
+      </div>
+    </div>
+
+    <figure class="card xt-gallery" data-xt-gallery>
+      <div class="xt-gallery-head">
+        <div>
+          <h3>All 105 recovered poses</h3>
+          <p>One demonstration from each recording session, with the robot rendered in blue from that session's recovered camera. Click a tile to enlarge it.</p>
+        </div>
+        <div class="segmented" role="group" aria-label="Overlay" data-xt-mode>
+          <button type="button" aria-pressed="true" data-mode="over">Rendering over recording</button>
+          <button type="button" aria-pressed="false" data-mode="plain">Recording only</button>
+        </div>
+      </div>
+      <div class="xt-blocks">
+        <div class="xt-block" data-block="robomind"><p class="xt-label" data-xt-label></p><canvas data-xt-canvas role="img" aria-label="49 UR5e recording sessions, one clip each"></canvas></div>
+        <div class="xt-block" data-block="bridge"><p class="xt-label" data-xt-label></p><canvas data-xt-canvas role="img" aria-label="56 WidowX recording sessions, one clip each"></canvas></div>
+      </div>
+      <div class="xt-detail">
+        <div class="xt-zoom" data-xt-zoom style="--split: 50%">
+          <canvas aria-label="The selected session, enlarged"></canvas>
+          <div class="split-line" aria-hidden="true"><span><svg viewBox="0 0 24 24"><path d="m9 6-6 6 6 6M15 6l6 6-6 6"/></svg></span></div>
+          <span class="stage-tag left">Rendered robot</span>
+          <span class="stage-tag right">Recording</span>
+          <input class="split-range" type="range" min="0" max="100" value="50" data-split aria-label="Move the divider between the rendering and the recording">
+        </div>
+        <div class="xt-detail-text">
+          <p class="xt-which" data-xt-which aria-live="polite"></p>
+          <p class="note">Tiles are downsampled to 160 × 120. Drag across the enlarged view to compare the rendering with the recording.</p>
+        </div>
+      </div>
+      <video class="xt-source" data-xt-video muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/extrinsics/mosaic.mp4"></video>
+    </figure>
+  </section>
+
+  <!-- Method -->
+  <section id="method">
+    <div class="section-head">
+      <div><h2>Method</h2></div>
+      <p>Doppel adapts <b>Wan 2.1 I2V 14B</b>, a pretrained image-to-video model. A rendering-enriched action adapter turns the future robot renderings and the joint trajectory into one conditioning vector per video token. The adapter and backbone are shared by every robot. Each robot keeps only its own frozen renderer and action normalization.</p>
+    </div>
+
+
+    <div class="method">
+      <ol class="steps" role="tablist" aria-label="Method steps" aria-orientation="vertical">
+        <li><button class="step" role="tab" type="button" aria-selected="true" data-step-id="calibrate"><span class="n">1</span><h3>Recover the camera</h3><p>Before training, each recording session's camera pose is recovered from its video, as described in Camera extrinsics above. DROID's own extrinsics are used as provided.<span class="fact"><b>1,133</b> camera poses for <b>52,249</b> demos</span></p></button></li>
+        <li><button class="step" role="tab" type="button" aria-selected="false" data-step-id="render"><span class="n">2</span><h3>Render the robot</h3><p>An articulated 3D Gaussian model of each robot, built with Dr. Robot, is posed by forward kinematics along the planned joint trajectory and drawn from the recovered camera. The renderings contain only the robot, with no future scene or object information.<span class="fact"><b>17</b> frames at <b>240 × 432</b></span></p></button></li>
+        <li><button class="step" role="tab" type="button" aria-selected="false" data-step-id="fuse"><span class="n">3</span><h3>Fuse render and action</h3><p>The frozen video VAE encodes the renderings; a small 3D convolutional encoder and self-attention map them onto the backbone's token grid. Actions are normalized per robot. Render tokens then attend to the action tokens.<span class="fact"><b>2,025</b> tokens · <b>30.5M</b> adapter parameters</span></p></button></li>
+        <li><button class="step" role="tab" type="button" aria-selected="false" data-step-id="modulate"><span class="n">4</span><h3>Modulate every token</h3><p>Each video token adds its conditioning vector to the flow-timestep embedding, which sets the shift, scale and gate of the transformer blocks. There are no embodiment tokens or robot-specific heads.<span class="fact"><b>40</b> transformer blocks</span></p></button></li>
+      </ol>
+      <figure class="card method-media" data-step-media>
+        <div class="pane" data-pane="calibrate">
+          <div class="calib-aligned">
+            <div class="mv-frame"><div class="sprite" data-calib-aligned role="img" aria-label="The WidowX clip playing with the robot rendered over it in blue from the recovered camera"></div></div>
+            <a class="pill" href="#extrinsics">How the cameras are recovered</a>
+          </div>
+        </div>
+        <div class="pane" data-pane="render" hidden>
+          <div class="double" data-double>
+            <div class="double-tabs" role="tablist" aria-label="Choose a robot">
+              <button class="chip" role="tab" type="button" aria-selected="true" data-robot="droid">Franka</button>
+              <button class="chip" role="tab" type="button" aria-selected="false" data-robot="bridge">WidowX</button>
+              <button class="chip" role="tab" type="button" aria-selected="false" data-robot="robomind">UR5e</button>
+            </div>
+            <div class="double-stage" data-stage style="--split: 50%">
+              <video class="layer-real" muted loop playsinline preload="metadata" aria-label="Recorded camera view"></video>
+              <video class="layer-render" muted loop playsinline preload="metadata" aria-label="The robot rendered from the same camera"></video>
+              <div class="split-line" aria-hidden="true"><span><svg viewBox="0 0 24 24"><path d="m9 6-6 6 6 6M15 6l6 6-6 6"/></svg></span></div>
+              <span class="stage-tag left">Rendered robot</span>
+              <span class="stage-tag right">Recording</span>
+              <input class="split-range" type="range" min="0" max="100" value="50" data-split aria-label="Move the divider between the rendered robot and the recording">
+            </div>
+          </div>
+        </div>
+        <div class="pane" data-pane="fuse" hidden><svg class="diagram" data-diagram="fuse" role="img" aria-label="Render tokens from the encoded renderings attend to 17 framewise action tokens and become one conditioning vector per video token"></svg></div>
+        <div class="pane" data-pane="modulate" hidden><svg class="diagram" data-diagram="modulate" role="img" aria-label="A video token's conditioning vector is added to the flow-timestep embedding, which sets the shift, scale and gate of the attention and feed-forward layers in all 40 transformer blocks"></svg></div>
+        <figcaption data-media-caption></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Data -->
+  <section id="data">
+    <div class="section-head">
+      <div><h2>Data</h2></div>
+      <p>Doppel trains jointly on DROID, RoboMIND and Bridge, sampling the three datasets uniformly. Single-robot baselines train on one dataset each. Every dataset has 200 validation clips of unseen trajectories and 200 test clips with a distribution shift.</p>
+    </div>
+    <div class="robots" data-robots></div>
+
+  </section>
+
+  <!-- Results -->
+  <section id="results">
+    <div class="section-head">
+      <div><h2>Results</h2></div>
+      <p>Doppel, one model for all three robots, beats each robot's action-only expert on PSNR, SSIM, LPIPS and SCS, on unseen trajectories and under distribution shift (a new lab for DROID, new objects for RoboMIND, a new kitchen for Bridge). Click a score to see its training curve.</p>
+    </div>
+
+    <figure class="claim" data-autoplay-film>
+      <div class="film-frame glow">
+        <video muted loop playsinline preload="none" poster="assets/images/claim-unseen-settings-poster.jpg" data-src="assets/videos/claim-unseen-settings.mp4" aria-label="Unseen settings: real recordings beside Doppel's predictions for a Franka in a new lab, a WidowX in a new kitchen and a UR5e with new objects"></video>
+      </div>
+      <figcaption class="claim-caption">
+        <p>Recordings beside Doppel's predictions in held-out settings: a new lab (Franka), a new kitchen (WidowX) and new objects (UR5e). Test-set PSNR, action-only expert vs. Doppel: 19.77 vs. 21.15 dB, 20.55 vs. 22.44 dB and 29.63 vs. 30.44 dB.</p>
+      </figcaption>
+    </figure>
+
+    <div class="scoreboard" data-scoreboard></div>
+
+    <div class="card explorer">
+      <div class="explorer-bar">
+        <div class="group">
+          <div class="segmented" role="group" aria-label="Baseline" data-ex-mode>
+            <button type="button" aria-pressed="true" data-mode="expert">vs. robot experts</button>
+            <button type="button" aria-pressed="false" data-mode="shared">vs. shared action-only</button>
+          </div>
+          <div class="segmented" role="group" aria-label="Metric" data-ex-metric>
+            <button type="button" aria-pressed="true" data-metric="psnr">PSNR</button>
+            <button type="button" aria-pressed="false" data-metric="scs">SCS</button>
+          </div>
+        </div>
+        <div class="group">
+          <div class="segmented" role="group" aria-label="Dataset" data-ex-dataset>
+            <button type="button" aria-pressed="true" data-dataset="droid">DROID</button>
+            <button type="button" aria-pressed="false" data-dataset="bridge">Bridge</button>
+            <button type="button" aria-pressed="false" data-dataset="robomind">RoboMIND</button>
+            <button type="button" aria-pressed="false" data-dataset="mean" hidden>Mean of 3</button>
+          </div>
+          <div class="segmented" role="group" aria-label="Evaluation split" data-ex-split>
+            <button type="button" aria-pressed="true" data-split="val">Unseen</button>
+            <button type="button" aria-pressed="false" data-split="ood">OOD</button>
+          </div>
+          <label class="toggle"><input type="checkbox" checked data-ex-bands>95% intervals</label>
+        </div>
+      </div>
+      <div class="explorer-grid">
+        <div><svg data-ex-svg role="img"></svg></div>
+        <div class="readout" aria-live="polite">
+          <div class="big" data-ex-big>—</div>
+          <div class="label" data-ex-label></div>
+          <span class="gain" data-ex-gain></span>
+          <p data-ex-text></p>
+        </div>
+      </div>
+      <p class="note" data-ex-note></p>
+    </div>
+
+    <figure class="claim" data-autoplay-film>
+      <div class="film-frame glow">
+        <video muted loop playsinline preload="none" poster="assets/images/claim-training-efficiency-poster.jpg" data-src="assets/videos/claim-training-efficiency.mp4" aria-label="Training efficiency: mean PSNR of the shared Doppel and shared action-only models against training draws, then Doppel against each single-robot action-only expert"></video>
+      </div>
+      <figcaption class="claim-caption">
+        <p>Two shared models trained on all three robots with the same data, batch and schedule. By mean PSNR, Doppel's first checkpoint (1.216M draws) is above the action-only model's last (3.356M), 63.8% fewer draws. The second half compares Doppel with the per-robot action-only experts: +1.31 dB on unseen trajectories and +1.36 dB out of distribution.</p>
+      </figcaption>
+    </figure>
+
+    <div class="card region">
+      <div class="region-head">
+        <div><h3>Region metrics</h3><p>Scores computed separately on the robot and on the objects it moves. An object counts as moving when its centroid travels at least 0.25 times the square root of its initial mask area.</p></div>
+        <div class="group">
+          <div class="segmented" role="group" aria-label="Region metric" data-region-metric>
+            <button type="button" aria-pressed="true" data-metric="psnr_obj">Object PSNR</button>
+            <button type="button" aria-pressed="false" data-metric="scs_obj">Object SCS</button>
+            <button type="button" aria-pressed="false" data-metric="psnr_arm">Robot PSNR</button>
+            <button type="button" aria-pressed="false" data-metric="scs_arm">Robot SCS</button>
+          </div>
+          <div class="segmented" role="group" aria-label="Evaluation split" data-region-split>
+            <button type="button" aria-pressed="false" data-split="val">Unseen</button>
+            <button type="button" aria-pressed="true" data-split="ood">OOD</button>
+          </div>
+        </div>
+      </div>
+      <div class="region-chart" data-region-chart></div>
+    </div>
+
+    <details class="card table">
+      <summary>Full whole-frame results table</summary>
+      <div class="inner">
+        <div class="table-bar">
+          <p class="note">Action-only experts and fine-tuned OSCAR are trained per dataset; Doppel (single) on DROID only. Best per dataset in bold.</p>
+          <div class="segmented" role="group" aria-label="Evaluation split" data-table-split>
+            <button type="button" aria-pressed="true" data-split="val">Unseen trajectories</button>
+            <button type="button" aria-pressed="false" data-split="ood">OOD test</button>
+          </div>
+        </div>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Whole-frame prediction quality">
+          <table class="metric-table">
+            <caption class="visually-hidden">PSNR, SSIM, LPIPS and SCS by dataset and method on the selected split.</caption>
+            <thead><tr><th scope="col">Dataset</th><th scope="col">Method</th><th scope="col">PSNR ↑</th><th scope="col">SSIM ↑</th><th scope="col">LPIPS ↓</th><th scope="col">SCS ↑</th><th scope="col">PSNR vs action-only</th></tr></thead>
+            <tbody data-table-body></tbody>
+          </table>
+        </div>
+        <p class="note">Metrics cover the 16 predicted frames and exclude the conditioning frame. SCS is the overlap of SAM 2 masks propagated through the predicted and recorded videos, averaged over tracked objects.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- Limitations -->
+  <section id="limitations">
+    <div class="section-head">
+      <div><h2>Limitations</h2></div>
+    </div>
+    <div class="limits">
+      <div class="card"><h3>Geometry and a camera</h3><p>Building the renderings needs a URDF, accurate robot geometry and a calibrated camera. Unknown or rapidly changing viewpoints remain a limitation.</p></div>
+      <div class="card"><h3>Configuration trajectories</h3><p>Doppel conditions on joint-space trajectories. Imperfect geometry or lower-level control commands would require modeling uncertainty in execution.</p></div>
+      <div class="card"><h3>Seen embodiments</h3><p>Evaluation covers robots seen in training and one camera per trajectory. Unseen robots and multi-view prediction are future work.</p></div>
+    </div>
+  </section>
+
+  <!-- Citation -->
+  <section id="citation">
+    <div class="section-head">
+      <div><h2>Citation</h2></div>
+    </div>
+    <div class="card cite">
+      <button class="copy" type="button" data-copy>Copy</button>
+<pre data-bibtex>@misc{jangir2026doppel,
+  title  = {Render the Robot, Generate the World:
+            One Video World Model Across Embodiments},
+  author = {Jangir, Yash and Mirakhor, Karan and Zabounidis, Renos and
+            Irshad, Muhammad Zubair and Zakharov, Sergey and
+            Bisk, Yonatan and Bharadhwaj, Homanga},
+  year   = {2026}
+}</pre>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>Doppel · Johns Hopkins University · Carnegie Mellon University · Toyota Research Institute</span>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/media-data.js"></script>
+<script src="js/clips.js"></script>
+<script src="js/main.js"></script>
+<script src="js/studio.js"></script>
+<script src="js/plots.js"></script>
+<script src="js/media.js"></script>
+<script src="js/motivation.js"></script>
+<script src="js/method.js"></script>
+<script src="js/extrinsics-data.js"></script>
+<script src="js/extrinsics.js"></script>
+</body>
+</html>
