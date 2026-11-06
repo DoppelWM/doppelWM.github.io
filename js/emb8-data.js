@@ -52,16 +52,6 @@ window.DOPPEL_EMB8 = {
    "poster": "assets/emb8/clips/abc-05.jpg"
   },
   {
-   "dataset": "abc",
-   "n": 6,
-   "kind": "short",
-   "aspect": "4:3",
-   "gt": "assets/emb8/clips/abc-06-gt.mp4",
-   "render": "assets/emb8/clips/abc-06-render.mp4",
-   "pred": "assets/emb8/clips/abc-06-pred.mp4",
-   "poster": "assets/emb8/clips/abc-06.jpg"
-  },
-  {
    "dataset": "trex",
    "n": 1,
    "kind": "short",
@@ -140,26 +130,6 @@ window.DOPPEL_EMB8 = {
    "render": "assets/emb8/clips/trex-08-render.mp4",
    "pred": "assets/emb8/clips/trex-08-pred.mp4",
    "poster": "assets/emb8/clips/trex-08.jpg"
-  },
-  {
-   "dataset": "trex",
-   "n": 9,
-   "kind": "whole",
-   "aspect": "16:9",
-   "gt": "assets/emb8/clips/trex-09-gt.mp4",
-   "render": "assets/emb8/clips/trex-09-render.mp4",
-   "pred": "assets/emb8/clips/trex-09-pred.mp4",
-   "poster": "assets/emb8/clips/trex-09.jpg"
-  },
-  {
-   "dataset": "trex",
-   "n": 10,
-   "kind": "whole",
-   "aspect": "16:9",
-   "gt": "assets/emb8/clips/trex-10-gt.mp4",
-   "render": "assets/emb8/clips/trex-10-render.mp4",
-   "pred": "assets/emb8/clips/trex-10-pred.mp4",
-   "poster": "assets/emb8/clips/trex-10.jpg"
   },
   {
    "dataset": "egoexo4d",

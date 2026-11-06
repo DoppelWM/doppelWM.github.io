@@ -1,9 +1,8 @@
-// Eight embodiments: held-out test clips of the five added datasets, and the chained long-horizon rollouts.
-// Each player shows the recording, the render given to the model and Doppel's prediction, kept in sync with the prediction.
+// Long horizon: chained rollouts of the eight-dataset model.
+// The player shows the recording, the render given to the model and Doppel's prediction, kept in sync with the prediction.
 (() => {
   const { reducedMotion, DATASETS, bindGroup, watch, videoBar } = window.Doppel;
   const MEDIA = window.DOPPEL_EMB8;
-  const ORDER = ['abc', 'trex', 'egoexo4d', 'gigahands', 'oakink2'];
   const tryPlay = v => v.play().catch(() => {});
 
   // Three videos that follow one leader; returns load(entry) and the leader.
@@ -34,34 +33,6 @@
     host.innerHTML = items.map((it, i) => `<button class="chip" role="tab" type="button" aria-selected="${i === 0}" data-${attr}="${it.key}">${it.label}</button>`).join('');
   }
 
-  function bindClips() {
-    const root = document.querySelector('[data-emb]');
-    if (!root || !MEDIA) return;
-    const meta = root.querySelector('[data-emb-meta]'), strip = root.querySelector('[data-emb-strip]');
-    const p = player(root.querySelector('[data-emb-stage]'), { frames: 17, label: 'Clip' });
-    let current = null;
-    const describe = (c, i, n) => {
-      const d = DATASETS[c.dataset];
-      const span = c.kind === 'whole' ? 'whole episode, 17 frames spread across it' : '3.2 s window';
-      meta.textContent = `${d.robot} · ${d.name} · held-out test clip ${i + 1} of ${n} · ${span}`;
-    };
-    const pick = (clips, i) => {
-      current = clips[i];
-      p.load(current);
-      describe(current, i, clips.length);
-      strip.querySelectorAll('button').forEach((b, j) => b.setAttribute('aria-pressed', String(j === i)));
-    };
-    const select = ds => {
-      const clips = MEDIA.clips.filter(c => c.dataset === ds);
-      strip.innerHTML = clips.map((c, i) => `<button type="button" class="emb-thumb" aria-pressed="false" aria-label="Clip ${i + 1}" data-aspect="${c.aspect}"><img src="${c.poster}" alt="" loading="lazy"></button>`).join('');
-      strip.querySelectorAll('button').forEach((b, i) => b.addEventListener('click', () => pick(clips, i)));
-      pick(clips, 0);
-    };
-    const tabHost = root.querySelector('[data-emb-tabs]');
-    tabs(tabHost, 'dataset', ORDER.map(ds => ({ key: ds, label: `${DATASETS[ds].robot} · ${DATASETS[ds].name}` })));
-    select(bindGroup(tabHost, 'dataset', select));
-  }
-
   function bindLong() {
     const root = document.querySelector('[data-long]');
     if (!root || !MEDIA) return;
@@ -77,10 +48,10 @@
     const p = player(root.querySelector('[data-long-stage]'), { label: 'Rollout' }, windowOf);
     const tabHost = root.querySelector('[data-long-tabs]');
     const seen = {};
-    tabs(tabHost, 'roll', MEDIA.long.map(l => { seen[l.dataset] = (seen[l.dataset] || 0) + 1; return { key: String(l.n), label: `${DATASETS[l.dataset].robot} · ${DATASETS[l.dataset].name}${seen[l.dataset] > 1 ? ` ${seen[l.dataset]}` : ''}` }; }));
+    tabs(tabHost, 'roll', MEDIA.long.map(l => { seen[l.dataset] = (seen[l.dataset] || 0) + 1; return { key: String(l.n), label: `${DATASETS[l.dataset].robot} · ${DATASETS[l.dataset].name}${seen[l.dataset] > 1 ? `, clip ${seen[l.dataset]}` : ''}` }; }));
     const select = n => { entry = MEDIA.long.find(l => String(l.n) === n); p.load(entry); windowOf(p.lead); };
     select(bindGroup(tabHost, 'roll', select));
   }
 
-  document.addEventListener('DOMContentLoaded', () => { bindClips(); bindLong(); });
+  document.addEventListener('DOMContentLoaded', bindLong);
 })();

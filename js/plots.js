@@ -1,6 +1,6 @@
 // Results: scoreboard, training-curve explorer, region chart and the full table, all drawn from DOPPEL_DATA.
 // Doppel is a solid blue line with round markers, action-only a dashed slate line with square markers. Series are labelled
-// at their line ends, in their own colour, instead of a legend.
+// at their line ends, in their own color, instead of a legend.
 (() => {
   const data = window.DOPPEL_DATA;
   const { DATASETS, METHODS, bindGroup, watch, reducedMotion } = window.Doppel;
@@ -120,7 +120,7 @@
       const d = DATASETS[ds];
       const cells = ['val', 'ood'].map(split => {
         const ours = row(ds, 'doppel8')[split].psnr, base = row(ds, 'action')[split].psnr;
-        return `<button class="score-cell" type="button" aria-pressed="false" data-cell="${ds}.${split}" aria-label="${d.name}, ${SPLIT[split]}: Doppel ${ours.toFixed(2)} dB PSNR, ${signed(ours - base, 2)} dB over the action-only expert. Show its training curve.">
+        return `<button class="score-cell" type="button" aria-pressed="false" data-cell="${ds}.${split}" aria-label="${d.name}, ${SPLIT[split]}: Doppel ${ours.toFixed(2)} dB PSNR, ${signed(ours - base, 2)} dB over the action-only expert (Doppel trained on all eight datasets; it additionally saw 35M clips from the five other datasets). Show the three-robot model's training curve for this set.">
           <span class="split">${split === 'val' ? 'Unseen trajectories' : d.shift}</span>
           <b>${ours.toFixed(2)}<small>dB</small></b>
           <span class="gain">${signed(ours - base, 2)} dB</span></button>`;
@@ -222,7 +222,7 @@
     new ResizeObserver(() => { const nw = Math.round(svg.clientWidth); if (nw && nw !== w) { w = nw; draw(false); } }).observe(svg);
   }
 
-  /* Region chart: one row per method, labelled in the method's colour */
+  /* Region chart: one row per method, labelled in the method's color */
   const REGION = { psnr_obj: 'Moving-object PSNR (dB)', scs_obj: 'Moving-object SCS', psnr_arm: 'Robot PSNR (dB)', scs_arm: 'Robot SCS' };
   function bindRegion() {
     const host = document.querySelector('[data-region-chart]');
@@ -300,7 +300,7 @@
             tr.appendChild(td);
           });
           const d = document.createElement('td');
-          if (r.method === 'action') d.textContent = '—';
+          if (r.method === 'action') d.textContent = '–';
           else {
             const g = r[split].psnr - base;
             d.textContent = `${signed(g, 2)} dB`;

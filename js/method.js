@@ -19,7 +19,7 @@
     node.style.backgroundPosition = `${col / (sheet.cols - 1) * 100}% ${row / (sheet.rows - 1) * 100}%`;
   };
 
-  /* Step 1: a real camera optimisation, step by step, then the clip at the recovered pose. */
+  /* Step 1: a real camera optimization, step by step, then the clip at the recovered pose. */
   function bindCalibration() {
     const root = document.querySelector('[data-calib]');
     if (!root) return;

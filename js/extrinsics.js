@@ -18,14 +18,14 @@
      traced step of the real WidowX run in the middle. Click a box for what it does. */
   const EXPLAIN = {
     joints: '<b>Logged joint angles.</b> The joint positions recorded with the video pose the robot model frame by frame, by forward kinematics.',
-    intr: '<b>Camera intrinsics.</b> The RealSense D435i values for RoboMIND and MoGe-estimated focal lengths for Bridge. Only the extrinsics are optimised.',
-    init: '<b>Initial guesses.</b> Several starting poses are optimised in parallel: the dataset\'s own pose when one is provided, otherwise a coarse search over viewpoints.',
-    pose: '<b>Camera pose.</b> A 6-DoF camera-to-robot transform. It is the only thing being optimised.',
+    intr: '<b>Camera intrinsics.</b> The RealSense D435i values for RoboMIND and MoGe-estimated focal lengths for Bridge. Only the extrinsics are optimized.',
+    init: '<b>Initial guesses.</b> Several starting poses from a coarse pose search are optimized in parallel.',
+    pose: '<b>Camera pose.</b> A 6-DoF camera-to-robot transform. It is the only thing being optimized.',
     render: '<b>Render the robot.</b> The robot\'s articulated 3D Gaussian model (Dr. Robot) is posed at the logged joint angles and rendered from the current camera, together with the 2D motion of its Gaussians between frames. The model itself stays frozen.',
     video: '<b>Recorded video.</b> The session\'s footage: what the rendering has to line up with.',
-    compare: '<b>Compare with the video.</b> The rendering is scored against the recording on colour (RGB), motion (optical flow from RAFT) and DINOv2 features.',
+    compare: '<b>Compare with the video.</b> The rendering is scored against the recording on color (RGB), motion (optical flow from RAFT) and DINOv2 features.',
     update: '<b>Update the camera.</b> The renderer is differentiable, so the alignment loss has a gradient with respect to the camera pose. Adam takes a step and the loop repeats.',
-    out: '<b>Best pose.</b> Of the parallel runs, the pose with the lowest alignment loss is kept, and reused for every demonstration recorded in that session.',
+    out: '<b>Best pose.</b> Of the parallel runs, the pose with the lowest alignment loss is kept, and reused for every demonstration recorded in that session. This loop is the one used for UR5e and WidowX. ABC (YAM) cameras move between days and were fitted per video to SAM 2 robot masks, refined photometrically, and kept only if they passed a held-out IoU check.',
   };
   function drawLoop(svg) {
     const C = window.DOPPEL_MEDIA.calibration;
@@ -81,7 +81,7 @@
     node('update', 470, 230, 160, 56, 'Update the camera', 'gradient step, Adam');
     node('pose', 190, 230, 160, 56, 'Camera pose', '6-DoF');
     node('video', 666, 30, 106, 56, 'Recorded video', 'the target');
-    node('out', 662, 230, 110, 56, 'Best pose', 'one per session');
+    node('out', 662, 230, 110, 56, 'Best pose', 'per session or video');
     Object.values(nodes).forEach(n => g.appendChild(n));
 
     let pinned = null, active = null;
@@ -96,7 +96,7 @@
       n.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(); } });
     });
 
-    // One lap: pose -> render -> compare -> update -> pose; corners are the box centres.
+    // One lap: pose -> render -> compare -> update -> pose; corners are the box centers.
     const lap = [['pose', 270, 258], ['render', 270, 58], ['compare', 550, 58], ['update', 550, 258], ['pose', 270, 258]];
     const LAP = 2400, HOLD = 2600, last = C.steps.length - 1;
     let step = 0, t0 = 0, raf = 0, visible = false;
@@ -140,7 +140,9 @@
       const ds = node.dataset.block, [c0, bw] = X.blocks[ds], count = X.counts[ds];
       const canvas = node.querySelector('canvas');
       canvas.style.aspectRatio = `${bw * TW} / ${HALF}`;
-      node.querySelector('[data-xt-label]').innerHTML = `${count.robot}<span>${count.poses} sessions · ${count.demos.toLocaleString('en-US')} demos</span>`;
+      node.querySelector('[data-xt-label]').innerHTML = ds === 'abc'
+        ? `${count.robot}<span>${count.poses} cameras in training · one pose per video</span>`
+        : `${count.robot}<span>${count.poses} sessions · ${count.demos.toLocaleString('en-US')} demos</span>`;
       return { ds, c0, bw, canvas, tiles: X.tiles.filter(t => t.ds === ds) };
     });
     const zoom = root.querySelector('[data-xt-zoom]');
@@ -188,7 +190,9 @@
     };
     const draw = () => { blocks.forEach(drawBlock); drawZoom(); };
     const describe = () => {
-      which.textContent = `${sel.robot}, session ${sel.i} of ${sel.n}: ${sel.demos.toLocaleString('en-US')} demonstration${sel.demos === 1 ? '' : 's'} recorded with this camera pose`;
+      which.textContent = sel.ds === 'abc'
+        ? `${sel.robot}, camera ${sel.i} of ${sel.n}: every video from this camera has its own recovered pose`
+        : `${sel.robot}, session ${sel.i} of ${sel.n}: ${sel.demos.toLocaleString('en-US')} demonstration${sel.demos === 1 ? '' : 's'} recorded with this camera pose`;
     };
 
     // Pick a tile.

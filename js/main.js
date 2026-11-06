@@ -5,9 +5,9 @@ window.Doppel = (() => {
     droid: { name: 'DROID', robot: 'Franka', shift: 'A new lab' },
     bridge: { name: 'Bridge', robot: 'WidowX', shift: 'A new kitchen' },
     robomind: { name: 'RoboMIND', robot: 'UR5e', shift: 'New objects' },
-    abc: { name: 'ABC', robot: 'YAM', shift: 'Unseen tasks' },
-    trex: { name: 'T-Rex', robot: 'Vega-1', shift: 'Unseen backgrounds' },
-    egoexo4d: { name: 'Ego-Exo4D', robot: 'Human body', shift: 'Unseen tasks' },
+    abc: { name: 'ABC', robot: 'YAM', shift: 'Held-out tasks' },
+    trex: { name: 'T-Rex', robot: 'Vega-1', shift: 'Unseen wall backgrounds' },
+    egoexo4d: { name: 'Ego-Exo4D', robot: 'Human body', shift: 'Held-out tasks' },
     gigahands: { name: 'GigaHands', robot: 'Human hands', shift: 'Unseen activities' },
     oakink2: { name: 'OakInk2', robot: 'Human hands', shift: 'Unseen tasks' },
   };
@@ -114,10 +114,11 @@ window.Doppel = (() => {
     const nav = document.getElementById('site-nav');
     const links = [...nav.querySelectorAll('a')];
     const sections = links.map(link => document.querySelector(link.hash)).filter(Boolean);
-    const close = () => { menu.setAttribute('aria-expanded', 'false'); nav.classList.remove('open'); };
+    const close = () => { menu.setAttribute('aria-expanded', 'false'); menu.setAttribute('aria-label', 'Open menu'); nav.classList.remove('open'); };
     menu.addEventListener('click', () => {
       const open = menu.getAttribute('aria-expanded') !== 'true';
       menu.setAttribute('aria-expanded', String(open));
+      menu.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
       nav.classList.toggle('open', open);
     });
     links.forEach(link => link.addEventListener('click', close));

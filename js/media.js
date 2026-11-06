@@ -116,7 +116,7 @@
     const n = v => v.toLocaleString('en-US');
     host.innerHTML = window.DOPPEL_DATA.corpus.map(row => `
       <article class="card robot" tabindex="0" aria-label="${DATASETS[row.dataset].name}: ${row.embodiment}">
-        <div class="thumb${row.dataset === 'droid' ? ' remount' : ''}"><img src="assets/images/${row.dataset}-ood-ground-truth.jpg" alt="" loading="lazy"><img class="render" src="assets/images/${row.dataset}-ood-render-display.jpg" alt="" loading="lazy"><span>Hover for the ${row.dataset === 'droid' ? 'robot render' : 'render'}</span></div>
+        <div class="thumb${row.dataset === 'droid' ? ' remount' : ''}"><img src="assets/images/${row.dataset}-ood-ground-truth.jpg" alt="" loading="lazy"><img class="render" src="assets/images/${row.dataset}-ood-render-display.jpg" alt="" loading="lazy"><span>Hover or tap for the ${row.dataset === 'droid' ? 'robot render' : 'render'}</span></div>
         <div class="body">
           <p class="ds">${DATASETS[row.dataset].name}</p>
           <h3>${row.embodiment}</h3>
@@ -124,7 +124,7 @@
             <div><dt>Training episodes</dt><dd>${n(row.episodes)}</dd></div>
             <div><dt>Training clips</dt><dd>${n(row.clips)}</dd></div>
             <div><dt>Eval clips</dt><dd>${row.val} + ${row.test}</dd></div>
-            <div><dt>Test shift</dt><dd>${row.shift}</dd></div>
+            <div><dt>Test shift</dt><dd>${['droid', 'bridge', 'robomind'].includes(row.dataset) ? row.shift : DATASETS[row.dataset].shift}</dd></div>
           </dl>
         </div>
       </article>`).join('');
@@ -132,8 +132,8 @@
 
   /* Method steps: each step shows its own pane (recovered-camera clip, render divider, two diagrams) beside the list. */
   const CAPTION = {
-    calibrate: 'A WidowX clip with the robot rendered in blue from its recovered camera. How the poses are recovered, and all 105 of them, are in Camera extrinsics above.',
-    render: 'Drag across the frame: the robot rendered from the recovered camera (left of the divider) and the recording (right), on held-out clips.',
+    calibrate: 'A WidowX clip with the robot rendered in blue from its recovered camera. How the poses are recovered, and all recovered cameras, are in Camera extrinsics above.',
+    render: 'Drag across the frame: the robot rendered from the recorded camera (provided for Franka, recovered for the others), left of the divider, and the recording (right), on held-out clips.',
     fuse: 'Render tokens (top) attend to the 17 framewise action tokens (bottom); the action grid shows the UR5e clip from above. Click a render token.',
     modulate: "One video token's path: its conditioning vector plus the timestep embedding gives that token's shift, scale and gate in every block. Click a token.",
   };
