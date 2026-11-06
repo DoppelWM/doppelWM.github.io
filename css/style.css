@@ -421,7 +421,8 @@ details.table .inner { padding: 0 24px 22px; }
 .table-scroll { overflow-x: auto; }
 .metric-table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 13.5px; font-variant-numeric: tabular-nums; }
 .metric-table th { padding: 10px 12px; border-bottom: 1px solid var(--line-strong); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dimmer); text-align: right; white-space: nowrap; }
-.metric-table th:nth-child(-n+2) { text-align: left; }
+.metric-table th:nth-child(-n+3) { text-align: left; }
+.metric-table td.trained { text-align: left; color: var(--ink-dim); }
 .metric-table td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; color: var(--ink-dim); }
 .metric-table td.ds { text-align: left; font-weight: 600; vertical-align: top; color: var(--ink); }
 .metric-table td.method { text-align: left; font-weight: 500; color: var(--ink); }
@@ -607,4 +608,23 @@ footer { margin-top: 104px; padding: 32px 0 calc(40px + env(safe-area-inset-bott
 }
 @media (max-width: 760px) {
   .mv.emb8 .mv-row.doppel { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+/* University logos under the affiliations: JHU, CMU, TRI, JHU drawn largest. */
+.logos { margin-top: 22px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px 40px; }
+.logos img { display: block; width: auto; opacity: 0.88; }
+.logos .logo-jhu { height: 54px; }
+.logos .logo-cmu { height: 25px; }
+.logos .logo-tri { height: 40px; }
+@media (max-width: 760px) {
+  .logos { margin-top: 18px; gap: 12px 20px; }
+  .logos .logo-jhu { height: 36px; }
+  .logos .logo-cmu { height: 16px; }
+  .logos .logo-tri { height: 27px; }
+}
+@media (max-width: 400px) {
+  .logos { gap: 10px 14px; }
+  .logos .logo-jhu { height: 32px; }
+  .logos .logo-cmu { height: 14px; }
+  .logos .logo-tri { height: 24px; }
 }

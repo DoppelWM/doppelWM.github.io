@@ -167,7 +167,7 @@
         : mean ? data.shared_avg[`${split}.${metric}`] : data.shared[`${dataset}.${split}.${metric}`];
       const name = mean ? 'the three datasets' : DATASETS[dataset].name;
       const labels = mode === 'expert'
-        ? { action: `Action-only expert (${DATASETS[dataset].name} only)`, doppel: 'Doppel (3 robots)' }
+        ? { action: `Action-only expert (${DATASETS[dataset].name} only)`, doppel: 'Doppel' }
         : { action: 'Shared action-only model', doppel: 'Doppel, same batch and schedule' };
       const short = mode === 'expert' ? { action: 'Action-only expert', doppel: 'Doppel' } : { action: 'Shared action-only', doppel: 'Doppel' };
       const ci = p => p.lo != null ? ` (95% CI ${fmt(p.lo)}–${fmt(p.hi)})` : '';
@@ -197,7 +197,7 @@
         out.text.innerHTML = `Averaged over the three datasets, Doppel's first checkpoint at <b>${d0.x.toFixed(3)}M</b> draws is above the shared action-only model's last at <b>${aN.x.toFixed(3)}M</b>, 63.8% fewer draws.`;
       } else {
         out.big.innerHTML = `${fmt(dN.y)}${psnr ? '<small>dB</small>' : ''}`;
-        out.label.textContent = `Doppel (3 robots) · ${name} · ${SPLIT[split]} · at ${dN.x.toFixed(2)}M draws`;
+        out.label.textContent = `Doppel · ${name} · ${SPLIT[split]} · at ${dN.x.toFixed(2)}M draws`;
         out.gain.textContent = `${signed(dN.y - aN.y, psnr ? 2 : 3)}${unit} over ${mode === 'expert' ? 'the expert' : 'shared action-only'}`;
         out.text.innerHTML = ahead
           ? `Doppel is ahead at every checkpoint on ${name}, ${SPLIT[split]}: <b>${fmt(dN.y)}${unit}</b> against <b>${fmt(aN.y)}${unit}</b> at the end.`
@@ -253,7 +253,11 @@
           const y = top + i * rowH + rowH / 2;
           const m = METHODS[r.method];
           const v = r[split][metric];
-          svg.appendChild(el('text', { x: 0, y: y + 4, class: 'row-label', fill: m.ink || m.color }, m.short));
+          const name = r.method === 'oscar' ? 'OSCAR' : m.short;
+          if (r.method === 'doppel_single' || r.method === 'doppel3') {
+            svg.appendChild(el('text', { x: 0, y: y - 1, class: 'row-label', fill: m.ink || m.color }, name));
+            svg.appendChild(el('text', { x: 0, y: y + 11, class: 'axis-text' }, r.method === 'doppel3' ? '3 robot datasets' : 'This dataset'));
+          } else svg.appendChild(el('text', { x: 0, y: y + 4, class: 'row-label', fill: m.ink || m.color }, name));
           if (r.method !== 'action') svg.appendChild(el('line', { x1: X(base), x2: X(v), y1: y, y2: y, stroke: m.color, 'stroke-width': 2.6, opacity: 0.5, 'stroke-linecap': 'round' }));
           const shape = r.method === 'action'
             ? el('rect', { x: X(v) - 6, y: y - 6, width: 12, height: 12, rx: 2.5, fill: m.color })
@@ -293,6 +297,10 @@
           m.className = 'method';
           m.textContent = METHODS[r.method].short;
           tr.appendChild(m);
+          const t = document.createElement('td');
+          t.className = 'trained';
+          t.textContent = METHODS[r.method].trained;
+          tr.appendChild(t);
           ['psnr', 'ssim', 'lpips', 'scs'].forEach(k => {
             const td = document.createElement('td');
             td.textContent = r[split][k].toFixed(3);
