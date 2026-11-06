@@ -37,6 +37,7 @@
     <nav id="site-nav" aria-label="Sections">
       <a href="#abstract">Abstract</a>
       <a href="#videos">Videos</a>
+      <a href="#embodiments">Embodiments</a>
       <a href="#extrinsics">Extrinsics</a>
       <a href="#method">Method</a>
       <a href="#data">Data</a>
@@ -78,16 +79,16 @@
 
     <figure class="hero-film" data-autoplay-film>
       <div class="film-frame glow">
-        <video muted loop playsinline preload="metadata" poster="assets/images/intro-poster.jpg" data-src="assets/videos/intro.mp4" data-src-small="assets/videos/intro-mobile.mp4" aria-label="Intro film: many robot and human embodiments, each robot rendered along its planned motion from the recorded camera, Doppel's predicted futures for Franka, WidowX and UR5e, and one model for every embodiment"></video>
+        <video muted loop playsinline preload="metadata" poster="assets/images/intro-poster.jpg" data-src="assets/videos/intro.mp4" data-src-small="assets/videos/intro-mobile.mp4" aria-label="Intro film: eight robot and human embodiments, each rendered along its planned motion from the recorded camera, and Doppel's predicted futures"></video>
       </div>
-      <figcaption>Predictions are Doppel's for Franka, WidowX and UR5e. Clips of the other embodiments show recorded video.</figcaption>
+      <figcaption>Predictions for Franka, WidowX and UR5e come from Doppel trained on the three robot datasets; predictions for the other five embodiments come from Doppel trained on all eight, on held-out test clips. The grid of all eight embodiments shows recordings.</figcaption>
     </figure>
   </div>
 
   <!-- Abstract -->
   <section id="abstract" class="abstract">
     <h2>Abstract</h2>
-    <p>Video world models usually learn how a robot moves from raw action vectors. Doppel renders the robot along its planned joint trajectory from the recorded camera and conditions one shared video model on these renderings together with the actions; camera poses for datasets that lack them are recovered automatically from the videos. Trained jointly on Franka, UR5e and WidowX data, it improves PSNR over per-robot action-only experts by 1.31 dB on unseen trajectories and 1.36 dB out of distribution.</p>
+    <p>Video world models usually learn how a robot moves from raw action vectors. Doppel renders the body along its planned trajectory from the recorded camera and conditions one shared video model on these renderings together with the actions; camera poses that robot datasets lack are recovered from the videos. One model trained on eight datasets, about 670 hours of video of robot arms, a bimanual robot, a humanoid, and human hands and bodies, with no embodiment label, improves PSNR over action-only baselines on the three robot-arm datasets by 1.00 dB on unseen trajectories and 1.20 dB out of distribution.</p>
   </section>
 
   <!-- Conditioning: the usual action-conditioned model against Doppel on one clip -->
@@ -115,7 +116,7 @@
           </figure>
         </div>
         <div class="mv-row doppel">
-          <div class="mv-head"><b>Render-conditioned</b><span>Doppel, one model for Franka, UR5e and WidowX</span></div>
+          <div class="mv-head"><b>Render-conditioned</b><span>Doppel, trained on the three robot datasets</span></div>
           <figure class="mv-cond">
             <figcaption class="panel-label">Rendered robot + actions</figcaption>
             <div class="mv-frame"><div class="sprite" data-sprite="render" role="img" aria-label="The UR5e rendered along the same actions from the recorded camera"></div></div>
@@ -146,7 +147,7 @@
   <section id="videos">
     <div class="section-head">
       <div><h2>Videos</h2></div>
-      <p>Each comparison starts from the same image and the same actions. The baseline is that robot's action-only expert: the same backbone, trained on that robot's data alone and conditioned on actions only. Doppel is one model for all three robots.</p>
+      <p>Each comparison starts from the same image and the same actions. The baseline is that robot's action-only expert: the same backbone, trained on that robot's data alone and conditioned on actions only. Doppel here is the model trained on the three robot datasets, at matched training exposure (earlier checkpoints than the final results below).</p>
     </div>
 
     <figure class="claim" data-autoplay-film>
@@ -154,7 +155,7 @@
         <video muted loop playsinline preload="none" poster="assets/images/claim-object-motion-poster.jpg" data-src="assets/videos/claim-object-motion.mp4" aria-label="Object motion: ground truth, action-only and Doppel for a WidowX lifting a fruit in an unseen toy kitchen and a UR5e lifting a vegetable, then moving-object PSNR and SCS"></video>
       </div>
       <figcaption class="claim-caption">
-        <p>A WidowX in the held-out toy kitchen and a UR5e with unseen objects. The action-only expert moves the arm but leaves the object in place. On the toy-kitchen test set, moving-object PSNR goes from 21.50 to 24.96 dB and SCS from 0.776 to 0.842.</p>
+        <p>A WidowX in the held-out toy kitchen and a UR5e with unseen objects. The action-only expert moves the arm but leaves the object in place. On the toy-kitchen test set, at matched training exposure, moving-object PSNR goes from 21.50 to 24.96 dB and SCS from 0.776 to 0.842.</p>
       </figcaption>
     </figure>
 
@@ -202,6 +203,42 @@
     </div>
   </section>
 
+  <!-- Eight embodiments: held-out test clips of the five added datasets, and chained long-horizon rollouts -->
+  <section id="embodiments">
+    <div class="section-head">
+      <div><h2>Eight embodiments</h2></div>
+      <p>Doppel trained on all eight datasets, on held-out test clips of the five datasets added beyond the robot arms: a bimanual robot, a humanoid with dexterous hands, and human hands and bodies. Each prediction starts from the first recorded frame; the model sees the rendered body and the actions, never the rest of the recording.</p>
+    </div>
+    <div class="card emb" data-emb>
+      <div class="emb-head">
+        <div class="group" role="tablist" aria-label="Dataset" data-emb-tabs></div>
+        <p class="emb-meta" data-emb-meta aria-live="polite"></p>
+      </div>
+      <div class="emb-stage" data-emb-stage>
+        <figure><figcaption class="panel-label">Recording</figcaption><div class="frame"><video muted playsinline loop preload="none" data-role="gt" aria-label="Recording"></video></div></figure>
+        <figure><figcaption class="panel-label">Render (input)</figcaption><div class="frame"><video muted playsinline loop preload="none" data-role="render" aria-label="The body rendered along the planned motion, given to the model"></video></div></figure>
+        <figure class="ours"><figcaption class="panel-label">Doppel</figcaption><div class="frame"><video muted playsinline loop preload="none" data-role="pred" aria-label="Doppel prediction"></video></div></figure>
+      </div>
+      <div class="emb-strip" data-emb-strip></div>
+    </div>
+
+    <div class="section-head sub" id="long-horizon">
+      <div><h3 class="h-long">Long horizon</h3></div>
+      <p>25.6 s from a single recorded frame. The rollout chains eight 3.2 s windows: each window starts from the model's own last predicted frame, with that window's render and actions, so after the first frame the model never sees the recording. Errors accumulate; over the held-out test episodes, PSNR falls by about 5 dB from the first window to the last.</p>
+    </div>
+    <div class="card emb long" data-long>
+      <div class="emb-head">
+        <div class="group" role="tablist" aria-label="Rollout" data-long-tabs></div>
+        <p class="emb-meta" data-long-meta aria-live="polite"></p>
+      </div>
+      <div class="emb-stage" data-long-stage>
+        <figure><figcaption class="panel-label">Recording</figcaption><div class="frame"><video muted playsinline loop preload="none" data-role="gt" aria-label="Recording"></video></div></figure>
+        <figure><figcaption class="panel-label">Render (input)</figcaption><div class="frame"><video muted playsinline loop preload="none" data-role="render" aria-label="The body rendered along the planned motion, given to the model"></video></div></figure>
+        <figure class="ours"><figcaption class="panel-label">Doppel, chained</figcaption><div class="frame"><video muted playsinline loop preload="none" data-role="pred" aria-label="Doppel prediction chained over eight windows"></video></div></figure>
+      </div>
+    </div>
+  </section>
+
   <!-- Camera extrinsics -->
   <section id="extrinsics">
     <div class="section-head">
@@ -239,7 +276,7 @@
           </tbody>
           <tfoot><tr><th scope="row">Total</th><td>52,249</td><td>1,133</td><td>105 recovered, for 32,412 demos</td></tr></tfoot>
         </table>
-        <p class="note">We treat the camera as fixed within a recording session, so one recovered pose serves every demonstration recorded in it. Intrinsics: DROID's own ZED values, the RealSense D435i values for RoboMIND, and MoGe-estimated focal lengths for Bridge. A few sessions with poor calibrations were left out of the corpus. We will release extrinsics and intrinsics for all 52,249 demonstrations, with the calibration code.</p>
+        <p class="note">We treat the camera as fixed within a recording session, so one recovered pose serves every demonstration recorded in it. Intrinsics: DROID's own ZED values, the RealSense D435i values for RoboMIND, and MoGe-estimated focal lengths for Bridge. A few sessions with poor calibrations were left out of the corpus. We will release extrinsics and intrinsics for all 52,249 robot-arm demonstrations, and recovered extrinsics for over 45k demonstrations across WidowX, UR5e and the bimanual YAM, with the calibration code.</p>
       </div>
     </div>
 
@@ -279,15 +316,15 @@
   <section id="method">
     <div class="section-head">
       <div><h2>Method</h2></div>
-      <p>Doppel adapts <b>Wan 2.1 I2V 14B</b>, a pretrained image-to-video model. A rendering-enriched action adapter turns the future robot renderings and the joint trajectory into one conditioning vector per video token. The adapter and backbone are shared by every robot. Each robot keeps only its own frozen renderer and action normalization.</p>
+      <p>Doppel adapts <b>Wan 2.1 I2V 14B</b>, a pretrained image-to-video model. A rendering-enriched action adapter turns the future robot renderings and the joint trajectory into one conditioning vector per video token. The adapter and backbone are shared by every embodiment. Each embodiment keeps only its own frozen renderer and action normalization.</p>
     </div>
 
 
     <div class="method">
       <ol class="steps" role="tablist" aria-label="Method steps" aria-orientation="vertical">
         <li><button class="step" role="tab" type="button" aria-selected="true" data-step-id="calibrate"><span class="n">1</span><h3>Recover the camera</h3><p>Before training, each recording session's camera pose is recovered from its video, as described in Camera extrinsics above. DROID's own extrinsics are used as provided.<span class="fact"><b>1,133</b> camera poses for <b>52,249</b> demos</span></p></button></li>
-        <li><button class="step" role="tab" type="button" aria-selected="false" data-step-id="render"><span class="n">2</span><h3>Render the robot</h3><p>An articulated 3D Gaussian model of each robot, built with Dr. Robot, is posed by forward kinematics along the planned joint trajectory and drawn from the recovered camera. The renderings contain only the robot, with no future scene or object information.<span class="fact"><b>17</b> frames at <b>240 × 432</b></span></p></button></li>
-        <li><button class="step" role="tab" type="button" aria-selected="false" data-step-id="fuse"><span class="n">3</span><h3>Fuse render and action</h3><p>The frozen video VAE encodes the renderings; a small 3D convolutional encoder and self-attention map them onto the backbone's token grid. Actions are normalized per robot. Render tokens then attend to the action tokens.<span class="fact"><b>2,025</b> tokens · <b>30.5M</b> adapter parameters</span></p></button></li>
+        <li><button class="step" role="tab" type="button" aria-selected="false" data-step-id="render"><span class="n">2</span><h3>Render the robot</h3><p>An articulated 3D Gaussian model of each robot, built with Dr. Robot, is posed by forward kinematics along the planned joint trajectory and drawn from the recovered camera. People are rendered from fitted MANO, SMPL-X and SMPL-H meshes. The renderings contain only the body, with no future scene or object information.<span class="fact"><b>17</b> frames at <b>240 × 432</b></span></p></button></li>
+        <li><button class="step" role="tab" type="button" aria-selected="false" data-step-id="fuse"><span class="n">3</span><h3>Fuse render and action</h3><p>The frozen video VAE encodes the renderings; a small 3D convolutional encoder and self-attention map them onto the backbone's token grid. Actions are normalized per embodiment and zero-padded to one 159-dimensional vector, so a single action encoder serves every embodiment. Render tokens then attend to the action tokens.<span class="fact"><b>2,025</b> tokens · <b>30.5M</b> adapter parameters</span></p></button></li>
         <li><button class="step" role="tab" type="button" aria-selected="false" data-step-id="modulate"><span class="n">4</span><h3>Modulate every token</h3><p>Each video token adds its conditioning vector to the flow-timestep embedding, which sets the shift, scale and gate of the transformer blocks. There are no embodiment tokens or robot-specific heads.<span class="fact"><b>40</b> transformer blocks</span></p></button></li>
       </ol>
       <figure class="card method-media" data-step-media>
@@ -308,7 +345,7 @@
               <video class="layer-real" muted loop playsinline preload="metadata" aria-label="Recorded camera view"></video>
               <video class="layer-render" muted loop playsinline preload="metadata" aria-label="The robot rendered from the same camera"></video>
               <div class="split-line" aria-hidden="true"><span><svg viewBox="0 0 24 24"><path d="m9 6-6 6 6 6M15 6l6 6-6 6"/></svg></span></div>
-              <span class="stage-tag left">Rendered robot</span>
+              <span class="stage-tag left">Robot render</span>
               <span class="stage-tag right">Recording</span>
               <input class="split-range" type="range" min="0" max="100" value="50" data-split aria-label="Move the divider between the rendered robot and the recording">
             </div>
@@ -325,7 +362,7 @@
   <section id="data">
     <div class="section-head">
       <div><h2>Data</h2></div>
-      <p>Doppel trains jointly on DROID, RoboMIND and Bridge, sampling the three datasets uniformly. Single-robot baselines train on one dataset each. Every dataset has 200 validation clips of unseen trajectories and 200 test clips with a distribution shift.</p>
+      <p>The full model trains on eight datasets, about 670 hours of video and 803,602 training clips, with one shared action encoder and no embodiment label, sampling each dataset in proportion to its training clips. The three-robot model uses DROID, RoboMIND and Bridge, sampled uniformly; single-robot baselines train on one dataset each. Every dataset has 200 validation clips of unseen trajectories and 200 test clips that hold out the listed shift. All evaluated embodiments appear in training.</p>
     </div>
     <div class="robots" data-robots></div>
 
@@ -335,7 +372,7 @@
   <section id="results">
     <div class="section-head">
       <div><h2>Results</h2></div>
-      <p>Doppel, one model for all three robots, beats each robot's action-only expert on PSNR, SSIM, LPIPS and SCS, on unseen trajectories and under distribution shift (a new lab for DROID, new objects for RoboMIND, a new kitchen for Bridge). Click a score to see its training curve.</p>
+      <p>Final checkpoints. Doppel improves whole-frame prediction over action-only conditioning and fine-tuned OSCAR on all three robot datasets, on unseen trajectories and under distribution shift (a new lab for DROID, a new kitchen for Bridge, new objects for RoboMIND). The rendering carries the gain: render-only conditioning matches render plus actions to within 0.02 dB on unseen trajectories. Training on all eight datasets raises PSNR over the three-robot model on four of the six robot evaluation sets and lowers it by 0.24 dB on Bridge OOD. The cards show Doppel trained on all eight datasets; click one to see the training curves.</p>
     </div>
 
     <figure class="claim" data-autoplay-film>
@@ -343,11 +380,14 @@
         <video muted loop playsinline preload="none" poster="assets/images/claim-unseen-settings-poster.jpg" data-src="assets/videos/claim-unseen-settings.mp4" aria-label="Unseen settings: real recordings beside Doppel's predictions for a Franka in a new lab, a WidowX in a new kitchen and a UR5e with new objects"></video>
       </div>
       <figcaption class="claim-caption">
-        <p>Recordings beside Doppel's predictions in held-out settings: a new lab (Franka), a new kitchen (WidowX) and new objects (UR5e). Test-set PSNR, action-only expert vs. Doppel: 19.77 vs. 21.15 dB, 20.55 vs. 22.44 dB and 29.63 vs. 30.44 dB.</p>
+        <p>Recordings beside predictions of Doppel trained on the three robot datasets, in held-out settings: a new lab (Franka), a new kitchen (WidowX) and new objects (UR5e).</p>
       </figcaption>
     </figure>
 
     <div class="scoreboard" data-scoreboard></div>
+    <h3 class="sub-head">The five added datasets</h3>
+    <p class="sub-note">Doppel trained on all eight datasets, the same weights as the cards above. Validation holds out trajectories; test holds out the listed shift.</p>
+    <div class="scoreboard other" data-other></div>
 
     <div class="card explorer">
       <div class="explorer-bar">
@@ -389,16 +429,16 @@
 
     <figure class="claim" data-autoplay-film>
       <div class="film-frame glow">
-        <video muted loop playsinline preload="none" poster="assets/images/claim-training-efficiency-poster.jpg" data-src="assets/videos/claim-training-efficiency.mp4" aria-label="Training efficiency: mean PSNR of the shared Doppel and shared action-only models against training draws, then Doppel against each single-robot action-only expert"></video>
+        <video muted loop playsinline preload="none" poster="assets/images/claim-training-efficiency-poster.jpg" data-src="assets/videos/claim-training-efficiency.mp4" aria-label="Training efficiency: mean PSNR of the shared Doppel and shared action-only models against training draws"></video>
       </div>
       <figcaption class="claim-caption">
-        <p>Two shared models trained on all three robots with the same data, batch and schedule. By mean PSNR, Doppel's first checkpoint (1.216M draws) is above the action-only model's last (3.356M), 63.8% fewer draws. The second half compares Doppel with the per-robot action-only experts: +1.31 dB on unseen trajectories and +1.36 dB out of distribution.</p>
+        <p>Two shared models trained on the three robot datasets with the same data, batch and schedule. Averaged over the three datasets, Doppel's first checkpoint (1.216M draws) is above the action-only model's last (3.356M) on PSNR and SCS, with 63.8% fewer draws.</p>
       </figcaption>
     </figure>
 
     <div class="card region">
       <div class="region-head">
-        <div><h3>Region metrics</h3><p>Scores computed separately on the robot and on the objects it moves. An object counts as moving when its centroid travels at least 0.25 times the square root of its initial mask area.</p></div>
+        <div><h3>Region metrics</h3><p>Scores computed separately on the robot and on the objects it moves, at matched training exposure: single-dataset experts after 3.36M training draws and the three-robot Doppel at the same per-dataset exposure (earlier checkpoints than the table). An object counts as moving when its centroid travels at least 0.25 times the square root of its initial mask area.</p></div>
         <div class="group">
           <div class="segmented" role="group" aria-label="Region metric" data-region-metric>
             <button type="button" aria-pressed="true" data-metric="psnr_obj">Object PSNR</button>
@@ -419,7 +459,7 @@
       <summary>Full whole-frame results table</summary>
       <div class="inner">
         <div class="table-bar">
-          <p class="note">Action-only experts and fine-tuned OSCAR are trained per dataset; Doppel (single) on DROID only. Best per dataset in bold.</p>
+          <p class="note">Final checkpoints, 200 clips per split. Action-only, render-only, fine-tuned OSCAR and "Doppel · this dataset" are trained on one dataset each; "Doppel · 3 robots" on the three robot datasets; "Doppel · 8 datasets" on all eight. Best per dataset in bold.</p>
           <div class="segmented" role="group" aria-label="Evaluation split" data-table-split>
             <button type="button" aria-pressed="true" data-split="val">Unseen trajectories</button>
             <button type="button" aria-pressed="false" data-split="ood">OOD test</button>
@@ -445,7 +485,8 @@
     <div class="limits">
       <div class="card"><h3>Geometry and a camera</h3><p>Building the renderings needs a URDF, accurate robot geometry and a calibrated camera. Unknown or rapidly changing viewpoints remain a limitation.</p></div>
       <div class="card"><h3>Configuration trajectories</h3><p>Doppel conditions on joint-space trajectories. Imperfect geometry or lower-level control commands would require modeling uncertainty in execution.</p></div>
-      <div class="card"><h3>Seen embodiments</h3><p>Evaluation covers robots seen in training and one camera per trajectory. Unseen robots and multi-view prediction are future work.</p></div>
+      <div class="card"><h3>Seen embodiments, one camera</h3><p>Evaluation covers embodiments seen in training and one camera per trajectory. Transfer to unseen embodiments and multi-view prediction are future work.</p></div>
+      <div class="card"><h3>Long horizons</h3><p>Chaining 3.2 s predictions into long rollouts accumulates error: over 25.6 s of held-out test episodes, PSNR falls by about 5 dB from the first window to the last. Late training also improved the seen Bridge kitchens while slightly lowering the unseen one.</p></div>
     </div>
   </section>
 
@@ -480,6 +521,8 @@
 <script src="js/clips.js"></script>
 <script src="js/main.js"></script>
 <script src="js/studio.js"></script>
+<script src="js/emb8-data.js"></script>
+<script src="js/embodiments.js"></script>
 <script src="js/plots.js"></script>
 <script src="js/media.js"></script>
 <script src="js/motivation.js"></script>

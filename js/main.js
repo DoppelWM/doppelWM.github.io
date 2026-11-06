@@ -5,12 +5,20 @@ window.Doppel = (() => {
     droid: { name: 'DROID', robot: 'Franka', shift: 'A new lab' },
     bridge: { name: 'Bridge', robot: 'WidowX', shift: 'A new kitchen' },
     robomind: { name: 'RoboMIND', robot: 'UR5e', shift: 'New objects' },
+    abc: { name: 'ABC', robot: 'YAM', shift: 'Unseen tasks' },
+    trex: { name: 'T-Rex', robot: 'Vega-1', shift: 'Unseen backgrounds' },
+    egoexo4d: { name: 'Ego-Exo4D', robot: 'Human body', shift: 'Unseen tasks' },
+    gigahands: { name: 'GigaHands', robot: 'Human hands', shift: 'Unseen activities' },
+    oakink2: { name: 'OakInk2', robot: 'Human hands', shift: 'Unseen tasks' },
   };
   const METHODS = {
     action: { label: 'Action-only expert', short: 'Action-only', color: 'var(--action)', ink: 'var(--action-ink)' },
     oscar: { label: 'OSCAR (fine-tuned)', short: 'OSCAR', color: 'var(--oscar)' },
-    doppel_single: { label: 'Doppel (single)', short: 'Doppel (single)', color: 'var(--single)' },
-    doppel: { label: 'Doppel (multi)', short: 'Doppel (multi)', color: 'var(--doppel)' },
+    render_only: { label: 'Render-only (this dataset)', short: 'Render-only', color: 'var(--single)' },
+    doppel_single: { label: 'Doppel trained on this dataset', short: 'Doppel · this dataset', color: 'var(--single)' },
+    doppel3: { label: 'Doppel trained on the 3 robot datasets', short: 'Doppel · 3 robots', color: 'var(--doppel)' },
+    doppel8: { label: 'Doppel trained on all 8 datasets', short: 'Doppel · 8 datasets', color: 'var(--doppel)' },
+    doppel: { label: 'Doppel (3 robots)', short: 'Doppel', color: 'var(--doppel)' },
   };
   const camel = s => s.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 

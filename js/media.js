@@ -115,17 +115,16 @@
     const host = document.querySelector('[data-robots]');
     const n = v => v.toLocaleString('en-US');
     host.innerHTML = window.DOPPEL_DATA.corpus.map(row => `
-      <article class="card robot" tabindex="0" aria-label="${DATASETS[row.dataset].name}: ${row.robot}">
-        <div class="thumb"><img src="assets/images/${row.dataset}-ood-ground-truth.jpg" alt="" loading="lazy"><img class="render" src="assets/images/${row.dataset}-ood-render-display.jpg" alt="" loading="lazy"><span>Hover for the render</span></div>
+      <article class="card robot" tabindex="0" aria-label="${DATASETS[row.dataset].name}: ${row.embodiment}">
+        <div class="thumb${row.dataset === 'droid' ? ' remount' : ''}"><img src="assets/images/${row.dataset}-ood-ground-truth.jpg" alt="" loading="lazy"><img class="render" src="assets/images/${row.dataset}-ood-render-display.jpg" alt="" loading="lazy"><span>Hover for the ${row.dataset === 'droid' ? 'robot render' : 'render'}</span></div>
         <div class="body">
           <p class="ds">${DATASETS[row.dataset].name}</p>
-          <h3>${row.robot}</h3>
+          <h3>${row.embodiment}</h3>
           <dl>
             <div><dt>Training episodes</dt><dd>${n(row.episodes)}</dd></div>
             <div><dt>Training clips</dt><dd>${n(row.clips)}</dd></div>
-            <div><dt>Arm</dt><dd>${row.dof}</dd></div>
             <div><dt>Eval clips</dt><dd>${row.val} + ${row.test}</dd></div>
-            <div class="full"><dt>Out-of-distribution test</dt><dd>${row.shift}</dd></div>
+            <div><dt>Test shift</dt><dd>${row.shift}</dd></div>
           </dl>
         </div>
       </article>`).join('');

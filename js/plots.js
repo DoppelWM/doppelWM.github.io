@@ -119,13 +119,13 @@
     host.innerHTML = ORDER.map(ds => {
       const d = DATASETS[ds];
       const cells = ['val', 'ood'].map(split => {
-        const ours = row(ds, 'doppel')[split].psnr, base = row(ds, 'action')[split].psnr;
+        const ours = row(ds, 'doppel8')[split].psnr, base = row(ds, 'action')[split].psnr;
         return `<button class="score-cell" type="button" aria-pressed="false" data-cell="${ds}.${split}" aria-label="${d.name}, ${SPLIT[split]}: Doppel ${ours.toFixed(2)} dB PSNR, ${signed(ours - base, 2)} dB over the action-only expert. Show its training curve.">
           <span class="split">${split === 'val' ? 'Unseen trajectories' : d.shift}</span>
           <b>${ours.toFixed(2)}<small>dB</small></b>
           <span class="gain">${signed(ours - base, 2)} dB</span></button>`;
       }).join('');
-      return `<div class="score"><div class="score-head">${d.name} · ${d.robot}<small>PSNR, vs. action-only</small></div>${cells}</div>`;
+      return `<div class="score"><div class="score-head">${d.name} · ${d.robot}<small>PSNR, gain over action-only</small></div>${cells}</div>`;
     }).join('');
     host.querySelectorAll('[data-cell]').forEach(b => b.addEventListener('click', () => {
       const [ds, split] = b.dataset.cell.split('.');
@@ -167,7 +167,7 @@
         : mean ? data.shared_avg[`${split}.${metric}`] : data.shared[`${dataset}.${split}.${metric}`];
       const name = mean ? 'the three datasets' : DATASETS[dataset].name;
       const labels = mode === 'expert'
-        ? { action: `Action-only expert (${DATASETS[dataset].name} only)`, doppel: 'Doppel (multi)' }
+        ? { action: `Action-only expert (${DATASETS[dataset].name} only)`, doppel: 'Doppel (3 robots)' }
         : { action: 'Shared action-only model', doppel: 'Doppel, same batch and schedule' };
       const short = mode === 'expert' ? { action: 'Action-only expert', doppel: 'Doppel' } : { action: 'Shared action-only', doppel: 'Doppel' };
       const ci = p => p.lo != null ? ` (95% CI ${fmt(p.lo)}–${fmt(p.hi)})` : '';
@@ -197,15 +197,15 @@
         out.text.innerHTML = `Averaged over the three datasets, Doppel's first checkpoint at <b>${d0.x.toFixed(3)}M</b> draws is above the shared action-only model's last at <b>${aN.x.toFixed(3)}M</b>, 63.8% fewer draws.`;
       } else {
         out.big.innerHTML = `${fmt(dN.y)}${psnr ? '<small>dB</small>' : ''}`;
-        out.label.textContent = `Doppel · ${name} · ${SPLIT[split]} · last checkpoint`;
+        out.label.textContent = `Doppel (3 robots) · ${name} · ${SPLIT[split]} · at ${dN.x.toFixed(2)}M draws`;
         out.gain.textContent = `${signed(dN.y - aN.y, psnr ? 2 : 3)}${unit} over ${mode === 'expert' ? 'the expert' : 'shared action-only'}`;
         out.text.innerHTML = ahead
           ? `Doppel is ahead at every checkpoint on ${name}, ${SPLIT[split]}: <b>${fmt(dN.y)}${unit}</b> against <b>${fmt(aN.y)}${unit}</b> at the end.`
           : `At the last checkpoint Doppel reaches <b>${fmt(dN.y)}${unit}</b> against <b>${fmt(aN.y)}${unit}</b> on ${name}, ${SPLIT[split]}.`;
       }
       out.note.textContent = mode === 'expert'
-        ? `Dashed: the action-only expert trained on ${DATASETS[dataset].name} only. Solid: Doppel (multi), one model for all three datasets, so its per-dataset draws are expectations under the uniform sampler. Bands are 95% bootstrap intervals over source episodes.`
-        : 'Dashed: the shared action-only model. Solid: Doppel. Both train jointly on all three datasets with global batch 64 and the same optimization schedule; draws are counted in total across datasets.';
+        ? `Dashed: the action-only expert trained on ${DATASETS[dataset].name} only. Solid: Doppel trained on the three robot datasets, so its per-dataset draws are expectations under the uniform sampler. Bands are 95% bootstrap intervals over source episodes. These are earlier checkpoints, up to about 3.4M draws per dataset; the final checkpoints are in the table below.`
+        : 'Dashed: the shared action-only model. Solid: Doppel. Both train jointly on the three robot datasets with global batch 64 and the same optimization schedule; draws are counted in total across datasets.';
       document.querySelectorAll('[data-cell]').forEach(b => b.setAttribute('aria-pressed', String(mode === 'expert' && b.dataset.cell === `${dataset}.${split}` && metric === 'psnr')));
       if (animate || seen) replay();
     }
@@ -257,10 +257,10 @@
           if (r.method !== 'action') svg.appendChild(el('line', { x1: X(base), x2: X(v), y1: y, y2: y, stroke: m.color, 'stroke-width': 2.6, opacity: 0.5, 'stroke-linecap': 'round' }));
           const shape = r.method === 'action'
             ? el('rect', { x: X(v) - 6, y: y - 6, width: 12, height: 12, rx: 2.5, fill: m.color })
-            : el('circle', { cx: X(v), cy: y, r: r.method === 'doppel' ? 7.5 : 6, fill: r.method === 'doppel_single' ? 'var(--surface-solid)' : m.color, stroke: m.color, 'stroke-width': 2.5 });
+            : el('circle', { cx: X(v), cy: y, r: r.method === 'doppel3' ? 7.5 : 6, fill: r.method === 'doppel_single' ? 'var(--surface-solid)' : m.color, stroke: m.color, 'stroke-width': 2.5 });
           point(shape, `${DATASETS[dataset].name} · ${m.label} · ${REGION[metric]} ${v.toFixed(3)}`);
           svg.appendChild(shape);
-          if (r.method === 'doppel') svg.appendChild(el('text', { x: X(v), y: y - 12, 'text-anchor': 'middle', class: 'axis-text', fill: 'var(--accent)', 'font-weight': 700 }, psnr ? v.toFixed(2) : v.toFixed(3)));
+          if (r.method === 'doppel3') svg.appendChild(el('text', { x: X(v), y: y - 12, 'text-anchor': 'middle', class: 'axis-text', fill: 'var(--accent)', 'font-weight': 700 }, psnr ? v.toFixed(2) : v.toFixed(3)));
         });
         panel.appendChild(svg);
         host.appendChild(panel);
@@ -283,7 +283,7 @@
         const base = rows.find(r => r.method === 'action')[split].psnr;
         rows.forEach((r, i) => {
           const tr = document.createElement('tr');
-          if (r.method === 'doppel') tr.className = 'ours';
+          if (r.method === 'doppel8') tr.className = 'ours';
           if (i === 0) {
             const td = document.createElement('td');
             td.className = 'ds'; td.rowSpan = rows.length; td.textContent = DATASETS[dataset].name;
@@ -314,9 +314,21 @@
     render(bindGroup(document.querySelector('[data-table-split]'), 'split', render));
   }
 
+  /* The eight-embodiment model on the five added datasets */
+  function renderOther() {
+    const host = document.querySelector('[data-other]');
+    if (!host) return;
+    host.innerHTML = data.other.map(r => {
+      const d = DATASETS[r.dataset];
+      const cell = (label, v) => `<div class="score-cell static"><span class="split">${label}</span><b>${v.psnr.toFixed(2)}<small>dB</small></b><span class="sub">SSIM ${v.ssim.toFixed(3)} · LPIPS ${v.lpips.toFixed(3)} · SCS ${v.scs.toFixed(3)}</span></div>`;
+      return `<div class="score"><div class="score-head">${d.name} · ${d.robot}<small>PSNR</small></div>${cell('Unseen trajectories', r.val)}${cell(d.shift, r.test)}</div>`;
+    }).join('');
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(tip);
     renderScoreboard();
+    renderOther();
     bindExplorer();
     bindRegion();
     bindTable();

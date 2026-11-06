@@ -1,21 +1,28 @@
 // Generated from the paper's result tables. Do not edit by hand.
 window.DOPPEL_DATA = {
- "note": "Values from the submitted paper (Tables 1, 2, 7-11). Curve points carry 95% bootstrap intervals over source episodes.",
+ "note": "Final checkpoints from the release paper (Tables 1-3). Region metrics and training curves are the paper's matched-exposure figures (earlier checkpoints of the three-robot model).",
  "corpus": [
   {
    "dataset": "droid",
-   "robot": "Franka Panda",
-   "dof": "7-DoF",
+   "embodiment": "Franka Panda",
    "episodes": 16726,
    "clips": 83511,
    "val": 200,
    "test": 200,
-   "shift": "Unseen lab environments"
+   "shift": "Unseen lab"
+  },
+  {
+   "dataset": "bridge",
+   "embodiment": "WidowX",
+   "episodes": 12387,
+   "clips": 61935,
+   "val": 200,
+   "test": 200,
+   "shift": "Unseen kitchen"
   },
   {
    "dataset": "robomind",
-   "robot": "UR5e + 2F-85",
-   "dof": "6-DoF",
+   "embodiment": "UR5e + 2F-85",
    "episodes": 14801,
    "clips": 74005,
    "val": 200,
@@ -23,31 +30,70 @@ window.DOPPEL_DATA = {
    "shift": "Unseen objects"
   },
   {
-   "dataset": "bridge",
-   "robot": "WidowX",
-   "dof": "6-DoF",
-   "episodes": 12387,
-   "clips": 61935,
+   "dataset": "abc",
+   "embodiment": "Bimanual YAM",
+   "episodes": 9115,
+   "clips": 274523,
    "val": 200,
    "test": 200,
-   "shift": "Unseen kitchen environments"
+   "shift": "Unseen tasks"
+  },
+  {
+   "dataset": "trex",
+   "embodiment": "Vega-1 + Sharpa hands",
+   "episodes": 4784,
+   "clips": 58120,
+   "val": 200,
+   "test": 200,
+   "shift": "Unseen backgrounds"
+  },
+  {
+   "dataset": "egoexo4d",
+   "embodiment": "Human body (SMPL-H)",
+   "episodes": 2041,
+   "clips": 213292,
+   "val": 200,
+   "test": 200,
+   "shift": "Unseen tasks"
+  },
+  {
+   "dataset": "gigahands",
+   "embodiment": "Human hands (MANO)",
+   "episodes": 8491,
+   "clips": 31218,
+   "val": 200,
+   "test": 200,
+   "shift": "Unseen activities"
+  },
+  {
+   "dataset": "oakink2",
+   "embodiment": "Human hands (SMPL-X)",
+   "episodes": 403,
+   "clips": 6998,
+   "val": 200,
+   "test": 200,
+   "shift": "Unseen tasks"
   }
  ],
+ "totals": {
+  "episodes": 68748,
+  "clips": 803602
+ },
  "overall": [
   {
    "dataset": "droid",
    "method": "action",
    "val": {
-    "psnr": 22.228,
-    "ssim": 0.832,
-    "lpips": 0.085,
-    "scs": 0.921
+    "psnr": 22.888,
+    "ssim": 0.841,
+    "lpips": 0.078,
+    "scs": 0.927
    },
    "ood": {
-    "psnr": 19.767,
-    "ssim": 0.775,
-    "lpips": 0.135,
-    "scs": 0.869
+    "psnr": 20.069,
+    "ssim": 0.779,
+    "lpips": 0.131,
+    "scs": 0.873
    }
   },
   {
@@ -68,50 +114,82 @@ window.DOPPEL_DATA = {
   },
   {
    "dataset": "droid",
-   "method": "doppel_single",
+   "method": "render_only",
    "val": {
-    "psnr": 24.077,
-    "ssim": 0.86,
-    "lpips": 0.068,
-    "scs": 0.938
+    "psnr": 24.355,
+    "ssim": 0.864,
+    "lpips": 0.065,
+    "scs": 0.941
    },
    "ood": {
-    "psnr": 21.151,
-    "ssim": 0.799,
-    "lpips": 0.115,
-    "scs": 0.898
+    "psnr": 21.335,
+    "ssim": 0.804,
+    "lpips": 0.11,
+    "scs": 0.9
    }
   },
   {
    "dataset": "droid",
-   "method": "doppel",
+   "method": "doppel_single",
    "val": {
-    "psnr": 24.22,
-    "ssim": 0.861,
-    "lpips": 0.067,
+    "psnr": 24.357,
+    "ssim": 0.864,
+    "lpips": 0.065,
     "scs": 0.94
    },
    "ood": {
-    "psnr": 21.147,
-    "ssim": 0.8,
+    "psnr": 21.276,
+    "ssim": 0.802,
     "lpips": 0.113,
-    "scs": 0.897
+    "scs": 0.902
+   }
+  },
+  {
+   "dataset": "droid",
+   "method": "doppel3",
+   "val": {
+    "psnr": 24.297,
+    "ssim": 0.862,
+    "lpips": 0.066,
+    "scs": 0.94
+   },
+   "ood": {
+    "psnr": 21.25,
+    "ssim": 0.803,
+    "lpips": 0.111,
+    "scs": 0.899
+   }
+  },
+  {
+   "dataset": "droid",
+   "method": "doppel8",
+   "val": {
+    "psnr": 24.819,
+    "ssim": 0.87,
+    "lpips": 0.062,
+    "scs": 0.943
+   },
+   "ood": {
+    "psnr": 21.46,
+    "ssim": 0.806,
+    "lpips": 0.108,
+    "scs": 0.903
    }
   },
   {
    "dataset": "bridge",
    "method": "action",
    "val": {
-    "psnr": 25.869,
-    "ssim": 0.866,
-    "lpips": 0.052,
-    "scs": 0.943
+    "psnr": 26.29,
+    "ssim": 0.871,
+    "lpips": 0.05,
+    "scs": 0.946
    },
    "ood": {
-    "psnr": 20.555,
-    "ssim": 0.752,
-    "lpips": 0.132,
-    "scs": 0.863
+    "psnr": 20.584,
+    "ssim": 0.755,
+    "lpips": 0.131,
+    "scs": 0.866
    }
   },
   {
@@ -132,34 +210,82 @@ window.DOPPEL_DATA = {
   },
   {
    "dataset": "bridge",
-   "method": "doppel",
+   "method": "render_only",
    "val": {
-    "psnr": 26.458,
+    "psnr": 26.604,
+    "ssim": 0.875,
+    "lpips": 0.048,
+    "scs": 0.949
+   },
+   "ood": {
+    "psnr": 21.35,
+    "ssim": 0.762,
+    "lpips": 0.117,
+    "scs": 0.9
+   }
+  },
+  {
+   "dataset": "bridge",
+   "method": "doppel_single",
+   "val": {
+    "psnr": 26.618,
+    "ssim": 0.875,
+    "lpips": 0.048,
+    "scs": 0.949
+   },
+   "ood": {
+    "psnr": 21.722,
+    "ssim": 0.771,
+    "lpips": 0.111,
+    "scs": 0.901
+   }
+  },
+  {
+   "dataset": "bridge",
+   "method": "doppel3",
+   "val": {
+    "psnr": 26.551,
+    "ssim": 0.873,
+    "lpips": 0.049,
+    "scs": 0.949
+   },
+   "ood": {
+    "psnr": 22.474,
+    "ssim": 0.786,
+    "lpips": 0.097,
+    "scs": 0.905
+   }
+  },
+  {
+   "dataset": "bridge",
+   "method": "doppel8",
+   "val": {
+    "psnr": 26.544,
     "ssim": 0.873,
     "lpips": 0.049,
     "scs": 0.948
    },
    "ood": {
-    "psnr": 22.438,
-    "ssim": 0.785,
-    "lpips": 0.098,
-    "scs": 0.904
+    "psnr": 22.238,
+    "ssim": 0.784,
+    "lpips": 0.099,
+    "scs": 0.899
    }
   },
   {
    "dataset": "robomind",
    "method": "action",
    "val": {
-    "psnr": 29.629,
-    "ssim": 0.916,
-    "lpips": 0.041,
-    "scs": 0.937
+    "psnr": 30.474,
+    "ssim": 0.923,
+    "lpips": 0.038,
+    "scs": 0.94
    },
    "ood": {
-    "psnr": 29.629,
-    "ssim": 0.914,
-    "lpips": 0.041,
-    "scs": 0.929
+    "psnr": 30.098,
+    "ssim": 0.918,
+    "lpips": 0.039,
+    "scs": 0.932
    }
   },
   {
@@ -180,18 +306,143 @@ window.DOPPEL_DATA = {
   },
   {
    "dataset": "robomind",
-   "method": "doppel",
+   "method": "render_only",
    "val": {
-    "psnr": 30.964,
-    "ssim": 0.927,
-    "lpips": 0.037,
-    "scs": 0.94
+    "psnr": 31.105,
+    "ssim": 0.929,
+    "lpips": 0.036,
+    "scs": 0.943
    },
    "ood": {
-    "psnr": 30.436,
+    "psnr": 30.296,
     "ssim": 0.919,
+    "lpips": 0.039,
+    "scs": 0.933
+   }
+  },
+  {
+   "dataset": "robomind",
+   "method": "doppel_single",
+   "val": {
+    "psnr": 31.104,
+    "ssim": 0.928,
+    "lpips": 0.037,
+    "scs": 0.942
+   },
+   "ood": {
+    "psnr": 30.29,
+    "ssim": 0.919,
+    "lpips": 0.039,
+    "scs": 0.928
+   }
+  },
+  {
+   "dataset": "robomind",
+   "method": "doppel3",
+   "val": {
+    "psnr": 31.065,
+    "ssim": 0.928,
+    "lpips": 0.037,
+    "scs": 0.941
+   },
+   "ood": {
+    "psnr": 30.442,
+    "ssim": 0.92,
     "lpips": 0.038,
-    "scs": 0.937
+    "scs": 0.935
+   }
+  },
+  {
+   "dataset": "robomind",
+   "method": "doppel8",
+   "val": {
+    "psnr": 31.302,
+    "ssim": 0.93,
+    "lpips": 0.036,
+    "scs": 0.942
+   },
+   "ood": {
+    "psnr": 30.659,
+    "ssim": 0.921,
+    "lpips": 0.038,
+    "scs": 0.936
+   }
+  }
+ ],
+ "other": [
+  {
+   "dataset": "abc",
+   "val": {
+    "psnr": 24.653,
+    "ssim": 0.85,
+    "lpips": 0.096,
+    "scs": 0.92
+   },
+   "test": {
+    "psnr": 25.217,
+    "ssim": 0.861,
+    "lpips": 0.089,
+    "scs": 0.927
+   }
+  },
+  {
+   "dataset": "trex",
+   "val": {
+    "psnr": 28.327,
+    "ssim": 0.871,
+    "lpips": 0.05,
+    "scs": 0.961
+   },
+   "test": {
+    "psnr": 28.346,
+    "ssim": 0.867,
+    "lpips": 0.051,
+    "scs": 0.956
+   }
+  },
+  {
+   "dataset": "egoexo4d",
+   "val": {
+    "psnr": 27.935,
+    "ssim": 0.895,
+    "lpips": 0.045,
+    "scs": 0.966
+   },
+   "test": {
+    "psnr": 27.611,
+    "ssim": 0.892,
+    "lpips": 0.044,
+    "scs": 0.965
+   }
+  },
+  {
+   "dataset": "gigahands",
+   "val": {
+    "psnr": 25.622,
+    "ssim": 0.885,
+    "lpips": 0.053,
+    "scs": 0.941
+   },
+   "test": {
+    "psnr": 25.784,
+    "ssim": 0.897,
+    "lpips": 0.049,
+    "scs": 0.944
+   }
+  },
+  {
+   "dataset": "oakink2",
+   "val": {
+    "psnr": 29.014,
+    "ssim": 0.918,
+    "lpips": 0.036,
+    "scs": 0.97
+   },
+   "test": {
+    "psnr": 29.09,
+    "ssim": 0.921,
+    "lpips": 0.033,
+    "scs": 0.97
    }
   }
  ],
@@ -246,7 +497,7 @@ window.DOPPEL_DATA = {
   },
   {
    "dataset": "droid",
-   "method": "doppel",
+   "method": "doppel3",
    "val": {
     "psnr_arm": 20.794,
     "psnr_obj": 28.54,
@@ -294,7 +545,7 @@ window.DOPPEL_DATA = {
   },
   {
    "dataset": "bridge",
-   "method": "doppel",
+   "method": "doppel3",
    "val": {
     "psnr_arm": 21.428,
     "psnr_obj": 27.715,
@@ -342,7 +593,7 @@ window.DOPPEL_DATA = {
   },
   {
    "dataset": "robomind",
-   "method": "doppel",
+   "method": "doppel3",
    "val": {
     "psnr_arm": 26.667,
     "psnr_obj": 29.289,
