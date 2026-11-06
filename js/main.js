@@ -15,7 +15,6 @@ window.Doppel = (() => {
     // short: the row name, as in the paper; trained: the paper's "Trained on" column, which tells the Doppel rows apart.
     action: { label: 'Action-only expert', short: 'Action-only', trained: 'This dataset', color: 'var(--action)', ink: 'var(--action-ink)' },
     oscar: { label: 'OSCAR (fine-tuned)', short: 'OSCAR (fine-tuned)', trained: 'This dataset', color: 'var(--oscar)' },
-    render_only: { label: 'Render-only (this dataset)', short: 'Render-only', trained: 'This dataset', color: 'var(--single)' },
     doppel_single: { label: 'Doppel trained on this dataset', short: 'Doppel', trained: 'This dataset', color: 'var(--single)' },
     doppel3: { label: 'Doppel trained on the 3 robot datasets', short: 'Doppel', trained: '3 robot datasets', color: 'var(--doppel)' },
     doppel8: { label: 'Doppel trained on all 8 datasets', short: 'Doppel', trained: 'All 8 datasets', color: 'var(--doppel)' },
