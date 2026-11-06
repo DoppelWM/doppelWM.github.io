@@ -93,12 +93,12 @@
         q('[data-mv-acts-label]').textContent = label;
         showActions = buildActions(q('[data-actions]'), ex.state, ex.names);
         q('[data-mv-expert]').textContent = `Action-only expert, trained on ${d.robot} data only`;
-        q('[data-mv-doppel]').textContent = 'Doppel, trained on the three robot datasets';
+        q('[data-mv-doppel]').textContent = 'Doppel';
         q('[data-mv-render-label]').textContent = 'Rendered robot + actions';
       } else {
         q('[data-mv-acts2-label]').textContent = label;
         showActions = buildActions(q('[data-actions2]'), ex.state, ex.names);
-        q('[data-mv-doppel]').textContent = 'Doppel, trained on all eight datasets';
+        q('[data-mv-doppel]').textContent = 'Doppel';
         q('[data-mv-render-label]').textContent = `Rendered ${BODY[ds]} (input)`;
       }
       const span = ex.clip === 'fullspan' ? 'whole episode, 17 frames spread across it' : '3.2 s window';

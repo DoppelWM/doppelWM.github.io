@@ -95,7 +95,7 @@
       stage.classList.toggle('emb8', !!clip.emb8);
       labels[0].textContent = 'Ground truth';
       labels[1].textContent = clip.emb8 ? 'Render (input)' : 'Action-only expert';
-      labels[2].textContent = clip.emb8 ? 'Doppel · 8 datasets' : 'Doppel · 3 robots';
+      labels[2].textContent = 'Doppel';
       videos[1].setAttribute('aria-label', clip.emb8 ? 'The body rendered along the planned motion, given to the model' : 'Action-only expert prediction');
       if (clip.emb8 && stage.dataset.mode === 'wipe') { stage.dataset.mode = 'side'; modeGroup.setValue('side'); }
       modeGroup.hidden = !!clip.emb8;
