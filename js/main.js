@@ -9,7 +9,7 @@ window.Doppel = (() => {
     trex: { name: 'T-Rex', robot: 'Vega-1', shift: 'Unseen wall backgrounds' },
     egoexo4d: { name: 'Ego-Exo4D', robot: 'Human body', shift: 'Held-out tasks' },
     gigahands: { name: 'GigaHands', robot: 'Human hands', shift: 'Unseen activities' },
-    oakink2: { name: 'OakInk2', robot: 'Human hands', shift: 'Unseen tasks' },
+    oakink2: { name: 'OakInk2', robot: 'Human upper body', shift: 'Unseen tasks' },
   };
   const METHODS = {
     action: { label: 'Action-only expert', short: 'Action-only', color: 'var(--action)', ink: 'var(--action-ink)' },

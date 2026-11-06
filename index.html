@@ -95,18 +95,22 @@
   <section id="conditioning">
     <div class="section-head">
       <div><h2>Actions alone, or the rendered robot</h2></div>
-      <p>The usual way to make a video model action-conditioned is to give it the action vectors: here the UR5e's six joint angles and gripper value at each of 17 frames. Doppel also renders the robot along the same actions, from the recorded camera, and conditions on the rendering and the actions together. Both models start from the same first frame, in a scene whose objects were held out from training.</p>
+      <p>The usual way to make a video model action-conditioned is to give it the action vectors: the joint angles and gripper value at each of 17 frames. Doppel also renders the robot along the same actions, from the recorded camera, and conditions on the rendering and the actions together. Both models start from the same first frame, on a held-out test clip.</p>
     </div>
     <div class="card mv" data-motivation>
+      <div class="mv-top">
+        <div class="group" role="tablist" aria-label="Dataset" data-mv-tabs></div>
+        <p class="mv-meta" data-mv-meta aria-live="polite"></p>
+      </div>
       <div class="mv-grid">
         <figure class="mv-first">
           <figcaption class="panel-label">First frame</figcaption>
           <div class="mv-frame"><div class="sprite" data-sprite="recording" data-fixed="0" role="img" aria-label="The first recorded frame: a UR5e above a table with a basket, a green vegetable and other objects"></div></div>
         </figure>
         <div class="mv-row action">
-          <div class="mv-head"><b>Action-conditioned</b><span>Action-only expert, trained on UR5e data only</span></div>
+          <div class="mv-head"><b>Action-conditioned</b><span data-mv-expert>Action-only expert, trained on UR5e data only</span></div>
           <figure class="mv-cond">
-            <figcaption class="panel-label">Actions, 8 per frame</figcaption>
+            <figcaption class="panel-label" data-mv-acts-label>Actions, 8 per frame</figcaption>
             <div class="mv-frame mv-actions" data-actions role="img" aria-label="The joint and gripper values for each of the 17 frames"></div>
           </figure>
           <div class="mv-model" aria-hidden="true"><span>Video model</span></div>
@@ -116,10 +120,14 @@
           </figure>
         </div>
         <div class="mv-row doppel">
-          <div class="mv-head"><b>Render-conditioned</b><span>Doppel, trained on the three robot datasets</span></div>
+          <div class="mv-head"><b>Render-conditioned</b><span data-mv-doppel>Doppel, trained on the three robot datasets</span></div>
           <figure class="mv-cond">
-            <figcaption class="panel-label">Rendered robot + actions</figcaption>
-            <div class="mv-frame"><div class="sprite" data-sprite="render" role="img" aria-label="The UR5e rendered along the same actions from the recorded camera"></div></div>
+            <figcaption class="panel-label" data-mv-render-label>Rendered robot + actions</figcaption>
+            <div class="mv-frame"><div class="sprite" data-sprite="render" role="img" aria-label="The robot rendered along the same actions from the recorded camera"></div></div>
+          </figure>
+          <figure class="mv-cond mv-acts2" hidden>
+            <figcaption class="panel-label" data-mv-acts2-label>Actions</figcaption>
+            <div class="mv-frame mv-actions" data-actions2 role="img" aria-label="Action values for each of the 17 frames"></div>
           </figure>
           <div class="mv-model" aria-hidden="true"><span>Video model</span></div>
           <figure class="mv-pred">
@@ -139,7 +147,7 @@
         <div class="frame-scrub"><div class="frame-ticks" aria-hidden="true" data-mv-ticks></div><input type="range" min="0" max="16" step="1" value="0" data-mv-scrub aria-label="Frame"></div>
         <span class="frame-count" data-mv-count>Frame 00 / 16</span>
       </div>
-      <p class="note">By the last frame the expert has raised the gripper but left the vegetable on the table; Doppel's prediction lifts it, as in the recording. Same first frame, same actions, same pretrained video backbone. Predictions are shown at the recording's 4:3 shape.</p>
+      <p class="note" data-mv-note></p>
     </div>
   </section>
 
@@ -196,7 +204,7 @@
           <button class="chip" type="button" aria-pressed="false" data-dataset="trex">T-Rex · Vega-1</button>
           <button class="chip" type="button" aria-pressed="false" data-dataset="egoexo4d">Ego-Exo4D · Human body</button>
           <button class="chip" type="button" aria-pressed="false" data-dataset="gigahands">GigaHands · Human hands</button>
-          <button class="chip" type="button" aria-pressed="false" data-dataset="oakink2">OakInk2 · Human hands</button>
+          <button class="chip" type="button" aria-pressed="false" data-dataset="oakink2">OakInk2 · Human upper body</button>
         </div>
         <div class="segmented" role="group" aria-label="Evaluation split" data-browse-split>
           <button type="button" aria-pressed="true" data-split="ood">Out of distribution</button>
@@ -265,7 +273,7 @@
             <tr><th scope="row">Vega-1 <span>T-Rex</span></th><td>5,436</td><td>1</td><td>the dataset's head-camera calibration</td></tr>
             <tr><th scope="row">Human body <span>Ego-Exo4D</span></th><td>2,626 takes</td><td>n/a</td><td>provided with the dataset</td></tr>
             <tr><th scope="row">Human hands <span>GigaHands</span></th><td>9,965 sequences</td><td>n/a</td><td>provided with the dataset</td></tr>
-            <tr><th scope="row">Human hands <span>OakInk2</span></th><td>627 sequences</td><td>n/a</td><td>provided with the dataset</td></tr>
+            <tr><th scope="row">Human upper body <span>OakInk2</span></th><td>627 sequences</td><td>n/a</td><td>provided with the dataset</td></tr>
           </tbody>
           <tfoot><tr><th scope="row">Recovered</th><td>45,345</td><td>13,038</td><td>UR5e, WidowX and YAM</td></tr></tfoot>
         </table>
