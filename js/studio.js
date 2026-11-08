@@ -22,11 +22,11 @@
   const MODELS = ['gt', 'action', 'doppel'];
   const CONTEXT = {
     ood: {
-      droid: 'An entire lab is held out: no scene, camera, operator or task from it appears in training.',
-      bridge: 'One complete toy-kitchen environment is held out from training.',
-      robomind: 'Held-out object-centric tasks with object instances absent from training.',
+      droid: 'A whole lab held out from training.',
+      bridge: 'A toy kitchen held out from training.',
+      robomind: 'Objects held out from training.',
     },
-    val: 'Held-out demonstrations from environments that are represented in training.',
+    val: 'New trajectories in training environments.',
   };
   const id = c => `${c.dataset}/${c.split}/${String(c.n).padStart(2, '0')}`;
 
@@ -94,7 +94,7 @@
       stage.dataset.aspect = clip.aspect;
       stage.classList.toggle('emb8', !!clip.emb8);
       labels[0].textContent = 'Ground truth';
-      labels[1].textContent = clip.emb8 ? 'Render (input)' : 'Action-only expert';
+      labels[1].textContent = clip.emb8 ? 'Rendered motion' : 'Action-only expert';
       labels[2].textContent = 'Doppel';
       videos[1].setAttribute('aria-label', clip.emb8 ? 'The body rendered along the planned motion, given to the model' : 'Action-only expert prediction');
       if (clip.emb8 && stage.dataset.mode === 'wipe') { stage.dataset.mode = 'side'; modeGroup.setValue('side'); }
@@ -156,7 +156,7 @@
       const clips = ALL.filter(c => c.dataset === dataset && (isNew || c.split === split));
       const ds = DATASETS[dataset];
       context.innerHTML = isNew
-        ? `<b>${ds.name} · ${ds.shift}.</b> Held-out test clips of Doppel trained on all eight datasets. This dataset has no action-only baseline, so the middle panel shows the render the model is given. ${clips.length} examples.`
+        ? `<b>${ds.name} · ${ds.shift}.</b> Held-out test clips. No action-only baseline. ${clips.length} examples.`
         : `<b>${ds.name} · ${split === 'ood' ? ds.shift : 'Unseen trajectories'}.</b> ${split === 'ood' ? CONTEXT.ood[dataset] : CONTEXT.val} ${clips.length} examples.`;
       grid.innerHTML = clips.map((c, i) => `
         <button class="clip" type="button" data-clip-id="${id(c)}" aria-current="false">

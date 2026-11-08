@@ -17,15 +17,15 @@
   /* The calibration loop. A pulse runs pose -> render -> compare -> update -> pose; each lap shows the next
      traced step of the real WidowX run in the middle. Click a box for what it does. */
   const EXPLAIN = {
-    joints: '<b>Logged joint angles.</b> The joint positions recorded with the video pose the robot model frame by frame, by forward kinematics.',
-    intr: '<b>Camera intrinsics.</b> The RealSense D435i values for RoboMIND and MoGe-estimated focal lengths for Bridge. Only the extrinsics are optimized.',
+    joints: '<b>Logged joint angles.</b> They pose the robot model frame by frame.',
+    intr: '<b>Camera intrinsics.</b> Known (RoboMIND) or estimated with MoGe (Bridge). Only the pose is optimized.',
     init: '<b>Initial guesses.</b> Several starting poses from a coarse pose search are optimized in parallel.',
     pose: '<b>Camera pose.</b> A 6-DoF camera-to-robot transform. It is the only thing being optimized.',
-    render: '<b>Render the robot.</b> The robot\'s articulated 3D Gaussian model (Dr. Robot) is posed at the logged joint angles and rendered from the current camera, together with the 2D motion of its Gaussians between frames. The model itself stays frozen.',
+    render: '<b>Render the robot.</b> The frozen Dr. Robot model is posed at the logged joints and rendered from the current camera.',
     video: '<b>Recorded video.</b> The session\'s footage: what the rendering has to line up with.',
-    compare: '<b>Compare with the video.</b> The rendering is scored against the recording on color (RGB), motion (optical flow from RAFT) and DINOv2 features.',
-    update: '<b>Update the camera.</b> The renderer is differentiable, so the alignment loss has a gradient with respect to the camera pose. Adam takes a step and the loop repeats.',
-    out: '<b>Best pose.</b> Of the parallel runs, the pose with the lowest alignment loss is kept, and reused for every demonstration recorded in that session. This loop is the one used for UR5e and WidowX. ABC (YAM) cameras move between days and were fitted per video to SAM 2 robot masks, refined photometrically, and kept only if they passed a held-out IoU check.',
+    compare: '<b>Compare with the video.</b> Scored on color, optical flow and DINOv2 features.',
+    update: '<b>Update the camera.</b> The renderer is differentiable, so a gradient step moves the camera pose.',
+    out: '<b>Best pose.</b> The best of the parallel runs is kept for the whole recording session (UR5e, WidowX). ABC cameras are fitted per video to SAM 2 robot masks.',
   };
   function drawLoop(svg) {
     const C = window.DOPPEL_MEDIA.calibration;

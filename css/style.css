@@ -114,6 +114,8 @@ h1 em, h2 em, h3 em { color: var(--blue); font-weight: 400; }
 .hero h1 .line2 { display: block; }
 .hero .subtitle { margin-top: 12px; font: italic 400 clamp(20px, 2.1vw, 28px)/1.3 var(--serif); color: var(--ink-dim); }
 .authors { margin-top: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 22px; max-width: 820px; font-size: 16px; font-weight: 500; }
+.authors a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(244, 245, 242, 0.25); transition: border-color .2s, color .2s; }
+.authors a:hover, .authors a:focus-visible { color: var(--blue); border-bottom-color: currentColor; }
 .authors sup, .affiliations sup { margin-left: 1px; font-size: 0.66em; font-weight: 600; color: var(--blue); }
 .affiliations { margin-top: 8px; display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 22px; font-size: 13.5px; color: var(--ink-dim); }
 .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 28px; }
@@ -168,6 +170,7 @@ section { padding: 104px 0 0; }
 
 /* Claim clips from the film */
 .claim { margin: 0 0 40px; }
+.claim.setup { margin: 12px 0 64px; }
 /* The clip carries its own headline, so the caption is a capsule label and a short factual note. */
 .claim-caption { display: flex; align-items: flex-start; gap: 10px 18px; max-width: 1000px; padding: 20px 4px 0; }
 .claim-caption .caps { flex: none; display: inline-flex; align-items: center; height: 26px; padding: 0 12px; border-radius: 999px; background: rgba(28, 34, 31, 0.92); border: 1px solid rgba(109, 164, 246, 0.45); font-size: 10.5px; color: var(--blue); white-space: nowrap; }
