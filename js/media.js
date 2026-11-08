@@ -132,10 +132,10 @@
 
   /* Method steps: each step shows its own pane (recovered-camera clip, render divider, two diagrams) beside the list. */
   const CAPTION = {
-    calibrate: 'A WidowX clip with the robot rendered in blue from its recovered camera. How the poses are recovered, and all recovered cameras, are in Camera extrinsics above.',
-    render: 'Drag across the frame: the robot rendered from the recorded camera (provided for Franka, recovered for the others), left of the divider, and the recording (right), on held-out clips.',
-    fuse: 'Render tokens (top) attend to the 17 framewise action tokens (bottom); the action grid shows the UR5e clip from above. Click a render token.',
-    modulate: "One video token's path: its conditioning vector plus the timestep embedding gives that token's shift, scale and gate in every block. Click a token.",
+    calibrate: 'WidowX with the robot rendered in blue from its recovered camera.',
+    render: 'Drag the divider: rendered robot (left), ground truth (right).',
+    fuse: 'Render tokens attend to the 17 per-frame action tokens. Click a render token.',
+    modulate: "One token's conditioning sets its shift, scale and gate in every block. Click a token.",
   };
   function bindMethod() {
     const fig = document.querySelector('[data-step-media]');

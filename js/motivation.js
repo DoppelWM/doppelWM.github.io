@@ -10,13 +10,11 @@
   const LAST = 16, FPS = 6, HOLD = 1100; // ms on the last frame before looping
   const NS = 'http://www.w3.org/2000/svg';
   const NOTE = {
-    droid: 'A Franka in a lab held out from training, 17 frames spread over the whole episode. The expert loses the cup on the way and the bowl ends nearly empty; Doppel carries the cup into the bowl, as in the recording.',
-    bridge: 'A WidowX in the held-out toy kitchen. By the last frame the expert has moved the arm but the green fruit stays on the stove; Doppel\'s prediction lifts it, as in the recording.',
-    robomind: 'A UR5e with objects held out from training. By the last frame the expert has raised the gripper but left the vegetable on the table; Doppel\'s prediction lifts it, as in the recording.',
+    droid: 'Held-out lab. The expert loses the cup; Doppel puts it in the bowl.',
+    bridge: 'Held-out kitchen. The expert leaves the fruit on the stove; Doppel lifts it.',
+    robomind: 'Unseen objects. The expert leaves the vegetable on the table; Doppel lifts it.',
   };
-  const COMMON = 'Same first frame, same actions, same pretrained video backbone.';
-  const SHAPE = ' 4:3 footage is shown at its recorded shape.';
-  const NEW_NOTE = 'There is no action-only baseline for this dataset, so only the render-conditioned row is shown: Doppel trained on all eight datasets, on a held-out test clip. The actions panel plots the 8 values that change most in this clip.';
+      const NEW_NOTE = 'No action-only baseline for this dataset.';
   const BODY = { abc: 'robot', trex: 'robot', egoexo4d: 'body', gigahands: 'hands', oakink2: 'body' };
 
   function spriteFrame(node, sheet, k) {
@@ -92,18 +90,17 @@
       if (robot) {
         q('[data-mv-acts-label]').textContent = label;
         showActions = buildActions(q('[data-actions]'), ex.state, ex.names);
-        q('[data-mv-expert]').textContent = `Action-only expert, trained on ${d.robot} data only`;
+        q('[data-mv-expert]').textContent = `Action-only expert (${d.robot} only)`;
         q('[data-mv-doppel]').textContent = 'Doppel';
         q('[data-mv-render-label]').textContent = 'Rendered robot + actions';
       } else {
         q('[data-mv-acts2-label]').textContent = label;
         showActions = buildActions(q('[data-actions2]'), ex.state, ex.names);
         q('[data-mv-doppel]').textContent = 'Doppel';
-        q('[data-mv-render-label]').textContent = `Rendered ${BODY[ds]} (input)`;
+        q('[data-mv-render-label]').textContent = `Rendered ${BODY[ds]}`;
       }
-      const span = ex.clip === 'fullspan' ? 'whole episode, 17 frames spread across it' : '3.2 s window';
-      q('[data-mv-meta]').textContent = `${d.robot} · ${d.name} · held-out test clip · ${span}`;
-      q('[data-mv-note]').textContent = (robot ? `${NOTE[ds]} ${COMMON}` : NEW_NOTE) + (ex.aspect === '4:3' ? SHAPE : '');
+      q('[data-mv-meta]').textContent = `${d.robot} · ${d.name} · held-out test clip${ex.clip === 'fullspan' ? ' · whole episode' : ''}`;
+      q('[data-mv-note]').textContent = robot ? NOTE[ds] : NEW_NOTE;
       show(reducedMotion.matches ? LAST : 0);
     };
 

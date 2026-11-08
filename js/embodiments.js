@@ -42,8 +42,8 @@
       if (!entry) return;
       const frame = Math.min(entry.frames - 1, Math.floor(v.currentTime * 5 + 1e-3));  // 5 fps
       const w = Math.min(8, Math.max(1, Math.ceil(frame / 16)));
-      meta.textContent = frame === 0 ? `${DATASETS[entry.dataset].robot} · ${DATASETS[entry.dataset].name} · first recorded frame`
-        : `${DATASETS[entry.dataset].robot} · ${DATASETS[entry.dataset].name} · window ${w} of 8 · ${(frame / 5).toFixed(1)} s`;
+      meta.textContent = frame === 0 ? `${DATASETS[entry.dataset].robot} · ${DATASETS[entry.dataset].name} · first frame`
+        : `${DATASETS[entry.dataset].robot} · ${DATASETS[entry.dataset].name} · window ${w} of 8`;
     };
     const p = player(root.querySelector('[data-long-stage]'), { label: 'Rollout' }, windowOf);
     const tabHost = root.querySelector('[data-long-tabs]');

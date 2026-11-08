@@ -204,8 +204,8 @@
           : `At the last checkpoint Doppel reaches <b>${fmt(dN.y)}${unit}</b> against <b>${fmt(aN.y)}${unit}</b> on ${name}, ${SPLIT[split]}.`;
       }
       out.note.textContent = mode === 'expert'
-        ? `Dashed: the action-only expert trained on ${DATASETS[dataset].name} only. Solid: Doppel trained on the three robot datasets, so its per-dataset draws are expectations under the uniform sampler. Bands are 95% bootstrap intervals over source episodes. These are earlier checkpoints, up to about 3.4M draws per dataset; the final checkpoints are in the table below.`
-        : 'Dashed: the shared action-only model. Solid: Doppel. Both train jointly on the three robot datasets with global batch 64 and the same optimization schedule; draws are counted in total across datasets.';
+        ? `Dashed: action-only expert (${DATASETS[dataset].name} only). Solid: three-robot Doppel. Bands: 95% bootstrap intervals. Earlier checkpoints than the table.`
+        : 'Dashed: shared action-only model. Solid: Doppel. Same three datasets, batch and schedule.';
       document.querySelectorAll('[data-cell]').forEach(b => b.setAttribute('aria-pressed', String(mode === 'expert' && b.dataset.cell === `${dataset}.${split}` && metric === 'psnr')));
       if (animate || seen) replay();
     }
