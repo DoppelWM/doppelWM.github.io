@@ -91,9 +91,9 @@
   <!-- Setup: one clip, from inputs to the generated video -->
   <figure class="claim setup" data-autoplay-film>
     <div class="film-frame glow">
-      <video muted loop playsinline preload="none" poster="assets/images/setup-poster.jpg" data-src="assets/videos/setup.mp4" aria-label="How Doppel works: an initial image and an action trajectory; the robot rendered in 3D along the actions; Doppel generates the video"></video>
+      <video muted loop playsinline preload="none" poster="assets/images/setup-poster.jpg" data-src="assets/videos/setup.mp4" aria-label="How Doppel works: an initial image and an action trajectory; the body rendered in 3D along the actions; Doppel generates the video"></video>
     </div>
-    <figcaption class="claim-caption"><p>An initial image and an action trajectory. The robot is rendered in 3D along the actions, and Doppel generates the video. Held-out Franka clip.</p></figcaption>
+    <figcaption class="claim-caption"><p>An initial image and an action trajectory. The body is rendered in 3D along the actions, and Doppel generates the video: a long-horizon rollout on a held-out OakInk2 episode.</p></figcaption>
   </figure>
 
   <!-- Abstract -->
@@ -166,7 +166,7 @@
   <section id="videos">
     <div class="section-head">
       <div><h2>Videos</h2></div>
-      <p>Same first frame, same actions. The baseline is an action-only expert: the same backbone, trained on that robot alone. The five non-arm datasets have no baseline, so the middle panel shows the rendered motion.</p>
+      <p>Same first frame, same actions. The baseline is an action-only expert: the same backbone, trained on that robot alone.</p>
     </div>
 
     <figure class="claim" data-autoplay-film>
@@ -250,7 +250,7 @@
   <section id="extrinsics">
     <div class="section-head">
       <div><h2>Camera extrinsics</h2></div>
-      <p>Rendering the robot needs the camera pose. RoboMIND, Bridge and ABC don't provide it, so we recover it from the videos: render the robot at its logged joint angles and optimize the camera until the render lines up with the video. No calibration target is needed.</p>
+      <p>Rendering the robot needs the camera pose. RoboMIND, Bridge and ABC don't provide it, so we recover it from the videos: render the robot at its logged joint angles and optimize the camera until the render lines up with the video.</p>
     </div>
 
     <figure class="card xt-arch">
@@ -272,23 +272,18 @@
         <figcaption class="note">A WidowX clip calibrated from a perturbed start. Blue: the robot rendered from the current camera estimate.</figcaption>
       </figure>
       <div class="card xt-counts">
-        <h3>Coverage</h3>
+        <h3>Recovered extrinsics</h3>
         <table class="xt-table">
-          <caption class="visually-hidden">Demonstrations and camera poses per dataset, and where the poses come from.</caption>
-          <thead><tr><th scope="col">Embodiment</th><th scope="col">Demos</th><th scope="col">Poses</th><th scope="col">Source</th></tr></thead>
+          <caption class="visually-hidden">Recovered camera extrinsics per dataset.</caption>
+          <thead><tr><th scope="col">Embodiment</th><th scope="col">Demos</th><th scope="col">Extrinsics</th><th scope="col">One per</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Franka <span>DROID</span></th><td>19,837</td><td>1,028</td><td>provided with the dataset</td></tr>
-            <tr><th scope="row">UR5e <span>RoboMIND</span></th><td>17,588</td><td>49</td><td>recovered, one per session</td></tr>
-            <tr><th scope="row">WidowX <span>Bridge</span></th><td>14,824</td><td>56</td><td>recovered, one per session</td></tr>
-            <tr><th scope="row">YAM <span>ABC</span></th><td>12,933</td><td>12,933</td><td>recovered, one per video (mask and photometric fit), on 44 cameras</td></tr>
-            <tr><th scope="row">Vega-1 <span>T-Rex</span></th><td>5,436</td><td>1</td><td>the dataset's head-camera calibration</td></tr>
-            <tr><th scope="row">Human body <span>Ego-Exo4D</span></th><td>2,626 takes</td><td>n/a</td><td>provided with the dataset</td></tr>
-            <tr><th scope="row">Human hands <span>GigaHands</span></th><td>9,965 sequences</td><td>n/a</td><td>provided with the dataset</td></tr>
-            <tr><th scope="row">Human upper body <span>OakInk2</span></th><td>627 sequences</td><td>n/a</td><td>provided with the dataset</td></tr>
+            <tr><th scope="row">UR5e <span>RoboMIND</span></th><td>17,588</td><td>49</td><td>recording session</td></tr>
+            <tr><th scope="row">WidowX <span>Bridge</span></th><td>14,824</td><td>56</td><td>recording session</td></tr>
+            <tr><th scope="row">YAM <span>ABC</span></th><td>12,933</td><td>12,933</td><td>video</td></tr>
           </tbody>
-          <tfoot><tr><th scope="row">Recovered</th><td>45,345</td><td>13,038</td><td>UR5e, WidowX and YAM</td></tr></tfoot>
+          <tfoot><tr><th scope="row">Total</th><td>45,345</td><td>13,038</td><td></td></tr></tfoot>
         </table>
-        <p class="note">One pose per recording session for RoboMIND and Bridge; one per video for ABC, whose cameras move between days. We will release camera poses for the 52,249 DROID, RoboMIND and Bridge demos and the 45k+ recovered ones, with the calibration code.</p>
+        <p class="note">ABC cameras move between recording days, so each ABC video gets its own extrinsics. We will release the recovered extrinsics with the calibration code.</p>
       </div>
     </div>
 
@@ -329,7 +324,7 @@
   <section id="method">
     <div class="section-head">
       <div><h2>Method</h2></div>
-      <p>Doppel fine-tunes <b>Wan 2.1 I2V 14B</b>. An adapter turns the robot renders and actions into one conditioning vector per video token. Everything is shared across embodiments except each one's renderer and action normalization.</p>
+      <p>Doppel conditions <b>Wan 2.1 I2V 14B</b> on render-enriched dense representations, injected as per-token timestep embeddings.</p>
     </div>
 
 

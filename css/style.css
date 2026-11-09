@@ -161,9 +161,9 @@ video::backdrop { background: #000; }
 
 /* Sections */
 section { padding: 104px 0 0; }
-.section-head { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: 20px 56px; align-items: end; margin-bottom: 32px; }
+.section-head { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: 20px 56px; align-items: start; margin-bottom: 32px; }
 .section-head h2 { font-size: clamp(36px, 4vw, 56px); line-height: 1.05; }
-.section-head p { font-size: 15.5px; line-height: 1.8; color: var(--ink-dim); }
+.section-head p { font-size: 15.5px; line-height: 1.8; color: var(--ink-dim); padding-top: 0.55em; }
 .section-head p b { color: var(--ink); font-weight: 600; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); min-width: 0; }
 .note { margin-top: 12px; font-size: 12.5px; line-height: 1.7; color: var(--ink-dimmer); }
