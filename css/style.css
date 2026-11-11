@@ -116,8 +116,7 @@ h1 em, h2 em, h3 em { color: var(--blue); font-weight: 400; }
 .authors { margin-top: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 22px; max-width: 820px; font-size: 16px; font-weight: 500; }
 .authors a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(244, 245, 242, 0.25); transition: border-color .2s, color .2s; }
 .authors a:hover, .authors a:focus-visible { color: var(--blue); border-bottom-color: currentColor; }
-.authors sup, .affiliations sup { margin-left: 1px; font-size: 0.66em; font-weight: 600; color: var(--blue); }
-.affiliations { margin-top: 8px; display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 22px; font-size: 13.5px; color: var(--ink-dim); }
+.authors sup, .logo-item sup { margin-left: 1px; font-size: 0.66em; font-weight: 600; color: var(--blue); }
 .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 28px; }
 .pill { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 17px; border: 1px solid var(--line-strong); border-radius: 999px; background: rgba(16, 20, 18, 0.72); color: var(--ink); font-size: 13.5px; font-weight: 500; text-decoration: none; }
 .pill:hover { border-color: var(--blue); color: var(--ink); }
@@ -514,7 +513,6 @@ footer { margin-top: 104px; padding: 32px 0 calc(40px + env(safe-area-inset-bott
   .hero { padding: 36px 0 24px; }
   .hero h1 { font-size: clamp(38px, 11vw, 52px); }
   .authors { gap: 2px 14px; font-size: 14.5px; }
-  .affiliations { flex-direction: column; gap: 0; font-size: 13px; }
   .links { gap: 6px; }
   .pill { min-height: 38px; padding: 7px 13px; font-size: 13px; }
   .hero-film { margin-top: 30px; }
@@ -613,7 +611,7 @@ footer { margin-top: 104px; padding: 32px 0 calc(40px + env(safe-area-inset-bott
   .mv.emb8 .mv-row.doppel { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 
-/* University logos under the affiliations, in the paper's order and layout (JHU, CMU, TRI with thin rules between),
+/* Affiliations as numbered logos, in the paper's order and layout (JHU, CMU, TRI with thin rules between),
    as light marks on the dark page; JHU a little larger. */
 .logos { display: flex; align-items: center; justify-content: center; gap: 26px; margin: 22px auto 0; }
 .logos img { display: block; width: auto; opacity: 0.9; }
@@ -621,6 +619,8 @@ footer { margin-top: 104px; padding: 32px 0 calc(40px + env(safe-area-inset-bott
 .logos .logo-cmu { height: 15px; opacity: 0.8; }
 .logos .logo-tri { height: 38px; opacity: 0.85; }
 .logos .logo-rule { width: 1px; height: 30px; background: rgba(255, 255, 255, 0.2); }
+.logo-item { display: flex; align-items: flex-start; gap: 3px; }
+.logo-item sup { font-size: 12px; line-height: 1; margin: -2px 0 0; }
 @media (max-width: 760px) {
   .logos { gap: 11px; margin-top: 18px; }
   .logos .logo-jhu { height: 23px; }
