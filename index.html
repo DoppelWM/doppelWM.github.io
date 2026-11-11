@@ -17,7 +17,7 @@
   <link rel="preload" href="fonts/instrument-serif-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/instrument-serif-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=202611081856">
 </head>
 <body>
 <!-- The film's signature backdrop: its blurred, dimmed video wall (one seamless 5.3 s period). -->
@@ -63,13 +63,8 @@
         <span><a href="https://yonatanbisk.com/" target="_blank" rel="noopener">Yonatan Bisk</a><sup>2</sup></span>
         <span><a href="https://homangab.github.io/" target="_blank" rel="noopener">Homanga Bharadhwaj</a><sup>1</sup></span>
       </p>
-      <p class="affiliations">
-        <span><sup>1</sup>Johns Hopkins University</span>
-        <span><sup>2</sup>Carnegie Mellon University</span>
-        <span><sup>3</sup>Toyota Research Institute</span>
-      </p>
-      <div class="logos">
-        <img class="logo-jhu" src="assets/images/logos/jhu.png" width="720" height="124" alt="Johns Hopkins University"><span class="logo-rule" aria-hidden="true"></span><img class="logo-cmu" src="assets/images/logos/cmu.png" width="537" height="48" alt="Carnegie Mellon University"><span class="logo-rule" aria-hidden="true"></span><img class="logo-tri" src="assets/images/logos/tri.png" width="112" height="88" alt="Toyota Research Institute">
+      <div class="logos" role="list" aria-label="Affiliations">
+        <span class="logo-item" role="listitem"><sup>1</sup><img class="logo-jhu" src="assets/images/logos/jhu.png?v=202611081856" width="720" height="124" alt="Johns Hopkins University"></span><span class="logo-rule" aria-hidden="true"></span><span class="logo-item" role="listitem"><sup>2</sup><img class="logo-cmu" src="assets/images/logos/cmu.png?v=202611081856" width="537" height="48" alt="Carnegie Mellon University"></span><span class="logo-rule" aria-hidden="true"></span><span class="logo-item" role="listitem"><sup>3</sup><img class="logo-tri" src="assets/images/logos/tri.png?v=202611081856" width="112" height="88" alt="Toyota Research Institute"></span>
       </div>
       <div class="links">
         <span class="pill" aria-disabled="true" role="link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Paper <small>soon</small></span>
@@ -91,7 +86,7 @@
   <!-- Setup: one clip, from inputs to the generated video -->
   <figure class="claim setup" data-autoplay-film>
     <div class="film-frame glow">
-      <video muted loop playsinline preload="none" poster="assets/images/setup-poster.jpg" data-src="assets/videos/setup.mp4" aria-label="How Doppel works: an initial image and an action trajectory; the body rendered in 3D along the actions; Doppel generates the video"></video>
+      <video muted loop playsinline preload="none" poster="assets/images/setup-poster.jpg?v=202611111507" data-src="assets/videos/setup.mp4?v=202611111507" aria-label="How Doppel works: an initial image and an action trajectory; the body rendered in 3D along the actions; Doppel generates the video"></video>
     </div>
     <figcaption class="claim-caption"><p>An initial image and an action trajectory. The body is rendered in 3D along the actions, and Doppel generates the video: a long-horizon rollout on a held-out OakInk2 episode.</p></figcaption>
   </figure>
@@ -524,18 +519,18 @@
   </div>
 </footer>
 
-<script src="js/data.js"></script>
-<script src="js/media-data.js"></script>
-<script src="js/clips.js"></script>
-<script src="js/main.js"></script>
-<script src="js/emb8-data.js"></script>
-<script src="js/studio.js"></script>
-<script src="js/embodiments.js"></script>
-<script src="js/plots.js"></script>
-<script src="js/media.js"></script>
-<script src="js/motivation.js"></script>
-<script src="js/method.js"></script>
-<script src="js/extrinsics-data.js"></script>
-<script src="js/extrinsics.js"></script>
+<script src="js/data.js?v=202611081856"></script>
+<script src="js/media-data.js?v=202611081856"></script>
+<script src="js/clips.js?v=202611081856"></script>
+<script src="js/main.js?v=202611081856"></script>
+<script src="js/emb8-data.js?v=202611081856"></script>
+<script src="js/studio.js?v=202611081856"></script>
+<script src="js/embodiments.js?v=202611081856"></script>
+<script src="js/plots.js?v=202611081856"></script>
+<script src="js/media.js?v=202611081856"></script>
+<script src="js/motivation.js?v=202611081856"></script>
+<script src="js/method.js?v=202611081856"></script>
+<script src="js/extrinsics-data.js?v=202611081856"></script>
+<script src="js/extrinsics.js?v=202611081856"></script>
 </body>
 </html>
