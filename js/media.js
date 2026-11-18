@@ -164,7 +164,27 @@
     });
   }
 
+  /* Policy evaluation: Success / Failure tabs swap the clip in the one film figure. */
+  const POLICY = {
+    success: { src: 'assets/videos/policy-success.mp4?v=20261118p', poster: 'assets/images/policy-success-poster.jpg?v=20261118p',
+      caption: 'Bimanual YAM, MolmoAct2 fine-tuned on this robot. From the real start frame, the policy completes the task inside Doppel.' },
+    failure: { src: 'assets/videos/policy-failure.mp4?v=20261118p', poster: 'assets/images/policy-failure-poster.jpg?v=20261118p',
+      caption: 'The same policy from another real start frame: inside Doppel it never moves the box.' },
+  };
+  function bindPolicy() {
+    const tabs = document.querySelector('[data-policy-tabs]');
+    if (!tabs) return;
+    const fig = document.querySelector('[data-policy-film]');
+    const video = fig.querySelector('video'), caption = fig.querySelector('[data-policy-caption]');
+    bindGroup(tabs, 'policy', key => {
+      const c = POLICY[key];
+      video.dataset.src = c.src; video.poster = c.poster; caption.textContent = c.caption;
+      if (video.getAttribute('src')) { video.src = c.src; tryPlay(video); }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
+    bindPolicy();
     bindBackdrop();
     bindDouble();
     bindFilms();

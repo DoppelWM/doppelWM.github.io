@@ -1,5 +1,5 @@
 // Actions alone, or the rendered robot: one held-out clip per dataset. For the three robot datasets the action-only
-// expert is set against Doppel trained on the three robots; the five added datasets have no action-only model, so only
+// expert is set against Doppel-8; the five added datasets have no action-only model, so only
 // the render-conditioned row is shown (Doppel trained on all eight). Every panel is a 17-frame sprite driven by one
 // frame index, so the panels can never drift apart.
 (() => {
@@ -83,7 +83,7 @@
       actionRow.hidden = !robot; acts2.hidden = robot;
       sprites = spriteNodes.filter(n => ex.sprites[n.dataset.sprite]).map(node => {
         const name = node.dataset.sprite, sheet = ex.sprites[name];
-        setupSprite(node, `${ex.dir}/${name}.jpg`, sheet);
+        setupSprite(node, `${ex.dir}/${name}.jpg?v=20261118a`, sheet);
         return { node, sheet, fixed: node.dataset.fixed != null ? Number(node.dataset.fixed) : null };
       });
       const label = `${ex.shown < ex.dims ? `Actions, ${ex.shown} of ${ex.dims}` : `Actions, ${ex.dims} per frame`}`;
@@ -91,12 +91,12 @@
         q('[data-mv-acts-label]').textContent = label;
         showActions = buildActions(q('[data-actions]'), ex.state, ex.names);
         q('[data-mv-expert]').textContent = `Action-only expert (${d.robot} only)`;
-        q('[data-mv-doppel]').textContent = 'Doppel';
+        q('[data-mv-doppel]').textContent = 'Doppel-8';
         q('[data-mv-render-label]').textContent = 'Rendered robot + actions';
       } else {
         q('[data-mv-acts2-label]').textContent = label;
         showActions = buildActions(q('[data-actions2]'), ex.state, ex.names);
-        q('[data-mv-doppel]').textContent = 'Doppel';
+        q('[data-mv-doppel]').textContent = 'Doppel-8';
         q('[data-mv-render-label]').textContent = `Rendered ${BODY[ds]}`;
       }
       q('[data-mv-meta]').textContent = `${d.robot} · ${d.name} · held-out test clip${ex.clip === 'fullspan' ? ' · whole episode' : ''}`;

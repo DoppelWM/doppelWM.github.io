@@ -1,6 +1,6 @@
 // Generated from the paper's result tables. Do not edit by hand.
 window.DOPPEL_DATA = {
- "note": "Final checkpoints from the release paper (Tables 1-3). Region metrics and training curves are the paper's matched-exposure figures (earlier checkpoints of the three-robot model).",
+ "note": "Final checkpoints from the release paper (tables and region metrics). Training curves are the paper's training-curve tables (earlier checkpoints of Doppel-3).",
  "corpus": [
   {
    "dataset": "droid",
@@ -403,29 +403,29 @@ window.DOPPEL_DATA = {
    "dataset": "droid",
    "method": "action",
    "val": {
-    "psnr_arm": 17.929,
-    "psnr_obj": 26.568,
-    "scs_arm": 0.786,
-    "scs_obj": 0.823
+    "psnr_arm": 18.74,
+    "psnr_obj": 27.26,
+    "scs_arm": 0.808,
+    "scs_obj": 0.839
    },
    "ood": {
-    "psnr_arm": 17.112,
-    "psnr_obj": 24.455,
-    "scs_arm": 0.704,
-    "scs_obj": 0.735
+    "psnr_arm": 17.64,
+    "psnr_obj": 24.67,
+    "scs_arm": 0.712,
+    "scs_obj": 0.746
    }
   },
   {
    "dataset": "droid",
    "method": "oscar",
    "val": {
-    "psnr_arm": 16.537,
-    "psnr_obj": 22.915,
+    "psnr_arm": 16.54,
+    "psnr_obj": 22.92,
     "scs_arm": 0.778,
     "scs_obj": 0.801
    },
    "ood": {
-    "psnr_arm": 16.053,
+    "psnr_arm": 16.05,
     "psnr_obj": 22.08,
     "scs_arm": 0.712,
     "scs_obj": 0.728
@@ -435,96 +435,144 @@ window.DOPPEL_DATA = {
    "dataset": "droid",
    "method": "doppel_single",
    "val": {
-    "psnr_arm": 20.59,
-    "psnr_obj": 28.332,
-    "scs_arm": 0.835,
-    "scs_obj": 0.864
+    "psnr_arm": 20.88,
+    "psnr_obj": 28.63,
+    "scs_arm": 0.843,
+    "scs_obj": 0.867
    },
    "ood": {
-    "psnr_arm": 19.252,
-    "psnr_obj": 26.386,
-    "scs_arm": 0.777,
-    "scs_obj": 0.799
+    "psnr_arm": 19.33,
+    "psnr_obj": 26.5,
+    "scs_arm": 0.773,
+    "scs_obj": 0.805
    }
   },
   {
    "dataset": "droid",
    "method": "doppel3",
    "val": {
-    "psnr_arm": 20.794,
-    "psnr_obj": 28.54,
-    "scs_arm": 0.844,
-    "scs_obj": 0.868
+    "psnr_arm": 20.89,
+    "psnr_obj": 28.56,
+    "scs_arm": 0.846,
+    "scs_obj": 0.869
    },
    "ood": {
-    "psnr_arm": 19.15,
-    "psnr_obj": 26.222,
-    "scs_arm": 0.78,
-    "scs_obj": 0.792
+    "psnr_arm": 19.23,
+    "psnr_obj": 26.41,
+    "scs_arm": 0.777,
+    "scs_obj": 0.8
+   }
+  },
+  {
+   "dataset": "droid",
+   "method": "doppel8",
+   "val": {
+    "psnr_arm": 21.59,
+    "psnr_obj": 29.25,
+    "scs_arm": 0.853,
+    "scs_obj": 0.876
+   },
+   "ood": {
+    "psnr_arm": 19.57,
+    "psnr_obj": 26.54,
+    "scs_arm": 0.795,
+    "scs_obj": 0.805
    }
   },
   {
    "dataset": "bridge",
    "method": "action",
    "val": {
-    "psnr_arm": 20.603,
-    "psnr_obj": 27.317,
-    "scs_arm": 0.773,
-    "scs_obj": 0.887
+    "psnr_arm": 21.15,
+    "psnr_obj": 27.65,
+    "scs_arm": 0.776,
+    "scs_obj": 0.894
    },
    "ood": {
-    "psnr_arm": 17.709,
-    "psnr_obj": 21.497,
+    "psnr_arm": 17.74,
+    "psnr_obj": 21.5,
     "scs_arm": 0.591,
-    "scs_obj": 0.776
+    "scs_obj": 0.778
    }
   },
   {
    "dataset": "bridge",
    "method": "oscar",
    "val": {
-    "psnr_arm": 18.255,
-    "psnr_obj": 22.784,
+    "psnr_arm": 18.25,
+    "psnr_obj": 22.78,
     "scs_arm": 0.702,
     "scs_obj": 0.84
    },
    "ood": {
-    "psnr_arm": 17.504,
-    "psnr_obj": 20.615,
+    "psnr_arm": 17.5,
+    "psnr_obj": 20.62,
     "scs_arm": 0.591,
     "scs_obj": 0.788
    }
   },
   {
    "dataset": "bridge",
-   "method": "doppel3",
+   "method": "doppel_single",
    "val": {
-    "psnr_arm": 21.428,
-    "psnr_obj": 27.715,
-    "scs_arm": 0.786,
-    "scs_obj": 0.898
+    "psnr_arm": 21.52,
+    "psnr_obj": 28.04,
+    "scs_arm": 0.787,
+    "scs_obj": 0.901
    },
    "ood": {
-    "psnr_arm": 19.161,
-    "psnr_obj": 24.963,
+    "psnr_arm": 18.72,
+    "psnr_obj": 23.64,
+    "scs_arm": 0.689,
+    "scs_obj": 0.838
+   }
+  },
+  {
+   "dataset": "bridge",
+   "method": "doppel3",
+   "val": {
+    "psnr_arm": 21.49,
+    "psnr_obj": 27.84,
+    "scs_arm": 0.791,
+    "scs_obj": 0.9
+   },
+   "ood": {
+    "psnr_arm": 19.05,
+    "psnr_obj": 24.93,
     "scs_arm": 0.692,
-    "scs_obj": 0.842
+    "scs_obj": 0.843
+   }
+  },
+  {
+   "dataset": "bridge",
+   "method": "doppel8",
+   "val": {
+    "psnr_arm": 21.57,
+    "psnr_obj": 27.96,
+    "scs_arm": 0.793,
+    "scs_obj": 0.901
+   },
+   "ood": {
+    "psnr_arm": 19.04,
+    "psnr_obj": 24.85,
+    "scs_arm": 0.685,
+    "scs_obj": 0.831
    }
   },
   {
    "dataset": "robomind",
    "method": "action",
    "val": {
-    "psnr_arm": 24.427,
-    "psnr_obj": 28.794,
-    "scs_arm": 0.899,
-    "scs_obj": 0.857
+    "psnr_arm": 25.64,
+    "psnr_obj": 29.16,
+    "scs_arm": 0.909,
+    "scs_obj": 0.866
    },
    "ood": {
-    "psnr_arm": 24.254,
-    "psnr_obj": 28.417,
-    "scs_arm": 0.887,
-    "scs_obj": 0.816
+    "psnr_arm": 25.03,
+    "psnr_obj": 28.7,
+    "scs_arm": 0.896,
+    "scs_obj": 0.826
    }
   },
   {
@@ -532,31 +580,63 @@ window.DOPPEL_DATA = {
    "method": "oscar",
    "val": {
     "psnr_arm": 22.96,
-    "psnr_obj": 24.956,
+    "psnr_obj": 24.96,
     "scs_arm": 0.882,
     "scs_obj": 0.809
    },
    "ood": {
     "psnr_arm": 22.89,
-    "psnr_obj": 25.336,
+    "psnr_obj": 25.34,
     "scs_arm": 0.876,
     "scs_obj": 0.798
    }
   },
   {
    "dataset": "robomind",
-   "method": "doppel3",
+   "method": "doppel_single",
    "val": {
-    "psnr_arm": 26.667,
-    "psnr_obj": 29.289,
-    "scs_arm": 0.917,
-    "scs_obj": 0.864
+    "psnr_arm": 26.71,
+    "psnr_obj": 29.53,
+    "scs_arm": 0.916,
+    "scs_obj": 0.869
    },
    "ood": {
-    "psnr_arm": 25.214,
-    "psnr_obj": 28.932,
+    "psnr_arm": 25.12,
+    "psnr_obj": 28.78,
+    "scs_arm": 0.902,
+    "scs_obj": 0.826
+   }
+  },
+  {
+   "dataset": "robomind",
+   "method": "doppel3",
+   "val": {
+    "psnr_arm": 26.81,
+    "psnr_obj": 29.46,
+    "scs_arm": 0.917,
+    "scs_obj": 0.869
+   },
+   "ood": {
+    "psnr_arm": 25.3,
+    "psnr_obj": 28.91,
     "scs_arm": 0.903,
     "scs_obj": 0.844
+   }
+  },
+  {
+   "dataset": "robomind",
+   "method": "doppel8",
+   "val": {
+    "psnr_arm": 27.23,
+    "psnr_obj": 29.6,
+    "scs_arm": 0.919,
+    "scs_obj": 0.873
+   },
+   "ood": {
+    "psnr_arm": 25.64,
+    "psnr_obj": 29.07,
+    "scs_arm": 0.905,
+    "scs_obj": 0.841
    }
   }
  ],

@@ -164,7 +164,7 @@
       const vals = state.map(s => s[d]), lo = Math.min(...vals), hi = Math.max(...vals);
       vals.forEach((v, t) => g.appendChild(el('rect', { x: 10 + t * 6, y: 250 + d * 9, width: 5, height: 8, rx: 1, class: 'd-cell', opacity: hi - lo < 1e-6 ? 0.12 : (0.18 + 0.8 * (v - lo) / (hi - lo)).toFixed(2) })));
     }
-    g.appendChild(el('text', { x: 10, y: 342, class: 'd-small' }, '17 frames × 8 numbers'));
+    g.appendChild(el('text', { x: 10, y: 342, class: 'd-small' }, '17 frames × 8 values (padded to 159)'));
     box(g, 138, 270, 108, 34, ['MLP', 'per frame']);
     arrow(g, 114, 287, 134, 287);
     const acts = [];

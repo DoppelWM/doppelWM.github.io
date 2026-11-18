@@ -1,6 +1,7 @@
 // Long horizon: chained rollouts of the eight-dataset model.
 // The player shows the recording, the render given to the model and Doppel's prediction, kept in sync with the prediction.
 (() => {
+  const V = 'v=20261118b';   // bump when the long-horizon assets change (browsers cache them)
   const { reducedMotion, DATASETS, bindGroup, watch, videoBar } = window.Doppel;
   const MEDIA = window.DOPPEL_EMB8;
   const tryPlay = v => v.play().catch(() => {});
@@ -22,7 +23,7 @@
     stage.after(bar.el);
     const load = entry => {
       stage.dataset.aspect = entry.aspect;
-      Object.entries(vids).forEach(([role, v]) => { v.poster = entry.poster; v.src = entry[role]; v.load(); });
+      Object.entries(vids).forEach(([role, v]) => { v.poster = `${entry.poster}?${V}`; v.src = `${entry[role]}?${V}`; v.load(); });
       if (visible && !userPaused) tryPlay(lead);
     };
     watch(stage, v => { visible = v; if (v && !userPaused && lead.getAttribute('src')) tryPlay(lead); else if (!v) lead.pause(); }, { threshold: 0.3 });

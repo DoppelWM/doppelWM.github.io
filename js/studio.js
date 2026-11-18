@@ -1,16 +1,17 @@
 // The comparison studio: three synchronized 17-frame clips with frame stepping, a wipe view and a clip browser.
-// Robot datasets: recording | action-only expert | Doppel (three-robot model), 8 fps.
+// Robot datasets: recording | action-only expert | Doppel-8 (EMA ep2489, swapped in 11-18), 8 fps.
 // The five added datasets: recording | render given to the model | Doppel (eight-dataset model), 5 fps; they have no
 // action-only baseline, so the middle panel shows the render and the wipe view is off.
 (() => {
   const { reducedMotion, DATASETS, bindGroup, watch } = window.Doppel;
   const LAST = 16;
   const NEW = ['abc', 'trex', 'egoexo4d', 'gigahands', 'oakink2'];
-  const KIND = { short: '3.2 s window', whole: 'whole episode, 17 frames spread across it' };
+  const KIND = { short: 'short clip', whole: 'whole episode, 17 frames spread across it' };
+  const DEFAULT = { abc: 'abc/test/02', egoexo4d: 'egoexo4d/test/08', gigahands: 'gigahands/test/09' };   // the clip each dataset opens on (else its first)
   // Bridge and RoboMIND footage is 4:3 that the evaluation stored stretched to 432 x 240; it is shown back at 4:3.
   const robotClips = window.DOPPEL_CLIPS.map(c => ({ ...c, fps: 8, aspect: c.dataset === 'droid' ? '16:9' : '4:3',
-    src: { gt: `${c.dir}/gt.mp4`, action: `${c.dir}/action.mp4`, doppel: `${c.dir}/doppel.mp4` },
-    poster: { gt: `${c.dir}/gt.jpg`, action: `${c.dir}/action.jpg`, doppel: `${c.dir}/doppel.jpg` }, thumb: `${c.dir}/doppel.jpg` }));
+    src: { gt: `${c.dir}/gt.mp4`, action: `${c.dir}/action.mp4`, doppel: `${c.dir}/doppel.mp4?v=20261118a` },
+    poster: { gt: `${c.dir}/gt.jpg`, action: `${c.dir}/action.jpg`, doppel: `${c.dir}/doppel.jpg?v=20261118a` }, thumb: `${c.dir}/doppel.jpg?v=20261118a` }));
   const counts = {};
   const newClips = (window.DOPPEL_EMB8 ? window.DOPPEL_EMB8.clips : []).map(c => {
     counts[c.dataset] = (counts[c.dataset] || 0) + 1;
@@ -95,7 +96,7 @@
       stage.classList.toggle('emb8', !!clip.emb8);
       labels[0].textContent = 'Ground truth';
       labels[1].textContent = clip.emb8 ? 'Rendered motion' : 'Action-only expert';
-      labels[2].textContent = 'Doppel';
+      labels[2].textContent = 'Doppel-8';
       videos[1].setAttribute('aria-label', clip.emb8 ? 'The body rendered along the planned motion, given to the model' : 'Action-only expert prediction');
       if (clip.emb8 && stage.dataset.mode === 'wipe') { stage.dataset.mode = 'side'; modeGroup.setValue('side'); }
       modeGroup.hidden = !!clip.emb8;
@@ -168,7 +169,7 @@
         load(clips[i]);
         if (root.getBoundingClientRect().top < 0) root.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'start' });
       }));
-      if (loadFirst) load(clips[0]);
+      if (loadFirst) load(clips.find(c => id(c) === DEFAULT[dataset]) || clips[0]);
       else if (clip) grid.querySelectorAll('[data-clip-id]').forEach(b => b.setAttribute('aria-current', String(b.dataset.clipId === id(clip))));
     }
     renderGrid(false);

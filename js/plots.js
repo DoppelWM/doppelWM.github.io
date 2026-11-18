@@ -120,7 +120,7 @@
       const d = DATASETS[ds];
       const cells = ['val', 'ood'].map(split => {
         const ours = row(ds, 'doppel8')[split].psnr, base = row(ds, 'action')[split].psnr;
-        return `<button class="score-cell" type="button" aria-pressed="false" data-cell="${ds}.${split}" aria-label="${d.name}, ${SPLIT[split]}: Doppel ${ours.toFixed(2)} dB PSNR, ${signed(ours - base, 2)} dB over the action-only expert (Doppel trained on all eight datasets; it additionally saw 35M clips from the five other datasets). Show the three-robot model's training curve for this set.">
+        return `<button class="score-cell" type="button" aria-pressed="false" data-cell="${ds}.${split}" aria-label="${d.name}, ${SPLIT[split]}: Doppel-8 ${ours.toFixed(2)} dB PSNR, ${signed(ours - base, 2)} dB over the action-only expert. Show Doppel's training curve for this set.">
           <span class="split">${split === 'val' ? 'Unseen trajectories' : d.shift}</span>
           <b>${ours.toFixed(2)}<small>dB</small></b>
           <span class="gain">${signed(ours - base, 2)} dB</span></button>`;
@@ -168,7 +168,7 @@
       const name = mean ? 'the three datasets' : DATASETS[dataset].name;
       const labels = mode === 'expert'
         ? { action: `Action-only expert (${DATASETS[dataset].name} only)`, doppel: 'Doppel' }
-        : { action: 'Shared action-only model', doppel: 'Doppel, same batch and schedule' };
+        : { action: 'Shared action-only model', doppel: 'Doppel' };
       const short = mode === 'expert' ? { action: 'Action-only expert', doppel: 'Doppel' } : { action: 'Shared action-only', doppel: 'Doppel' };
       const ci = p => p.lo != null ? ` (95% CI ${fmt(p.lo)}–${fmt(p.hi)})` : '';
       const d0 = s.doppel[0], aN = s.action.at(-1), dN = s.doppel.at(-1);
@@ -204,8 +204,8 @@
           : `At the last checkpoint Doppel reaches <b>${fmt(dN.y)}${unit}</b> against <b>${fmt(aN.y)}${unit}</b> on ${name}, ${SPLIT[split]}.`;
       }
       out.note.textContent = mode === 'expert'
-        ? `Dashed: action-only expert (${DATASETS[dataset].name} only). Solid: three-robot Doppel. Bands: 95% bootstrap intervals. Earlier checkpoints than the table.`
-        : 'Dashed: shared action-only model. Solid: Doppel. Same three datasets, batch and schedule.';
+        ? `Dashed: action-only expert (${DATASETS[dataset].name} only). Solid: Doppel. Bands: 95% bootstrap intervals. Earlier checkpoints than the table.`
+        : 'Dashed: shared action-only model. Solid: Doppel. Both trained on the three robot datasets.';
       document.querySelectorAll('[data-cell]').forEach(b => b.setAttribute('aria-pressed', String(mode === 'expert' && b.dataset.cell === `${dataset}.${split}` && metric === 'psnr')));
       if (animate || seen) replay();
     }
@@ -254,17 +254,17 @@
           const m = METHODS[r.method];
           const v = r[split][metric];
           const name = r.method === 'oscar' ? 'OSCAR' : m.short;
-          if (r.method === 'doppel_single' || r.method === 'doppel3') {
+          if (m.trained && r.method !== 'action' && r.method !== 'oscar') {
             svg.appendChild(el('text', { x: 0, y: y - 1, class: 'row-label', fill: m.ink || m.color }, name));
-            svg.appendChild(el('text', { x: 0, y: y + 11, class: 'axis-text' }, r.method === 'doppel3' ? '3 robot datasets' : 'This dataset'));
+            svg.appendChild(el('text', { x: 0, y: y + 11, class: 'axis-text' }, m.trained));
           } else svg.appendChild(el('text', { x: 0, y: y + 4, class: 'row-label', fill: m.ink || m.color }, name));
           if (r.method !== 'action') svg.appendChild(el('line', { x1: X(base), x2: X(v), y1: y, y2: y, stroke: m.color, 'stroke-width': 2.6, opacity: 0.5, 'stroke-linecap': 'round' }));
           const shape = r.method === 'action'
             ? el('rect', { x: X(v) - 6, y: y - 6, width: 12, height: 12, rx: 2.5, fill: m.color })
-            : el('circle', { cx: X(v), cy: y, r: r.method === 'doppel3' ? 7.5 : 6, fill: r.method === 'doppel_single' ? 'var(--surface-solid)' : m.color, stroke: m.color, 'stroke-width': 2.5 });
+            : el('circle', { cx: X(v), cy: y, r: r.method === 'doppel8' ? 7.5 : 6, fill: r.method === 'doppel8' ? m.color : 'var(--surface-solid)', stroke: m.color, 'stroke-width': 2.5 });
           point(shape, `${DATASETS[dataset].name} · ${m.label} · ${REGION[metric]} ${v.toFixed(3)}`);
           svg.appendChild(shape);
-          if (r.method === 'doppel3') svg.appendChild(el('text', { x: X(v), y: y - 12, 'text-anchor': 'middle', class: 'axis-text', fill: 'var(--accent)', 'font-weight': 700 }, psnr ? v.toFixed(2) : v.toFixed(3)));
+          if (r.method === 'doppel8') svg.appendChild(el('text', { x: X(v), y: y - 12, 'text-anchor': 'middle', class: 'axis-text', fill: 'var(--accent)', 'font-weight': 700 }, psnr ? v.toFixed(2) : v.toFixed(3)));
         });
         panel.appendChild(svg);
         host.appendChild(panel);

@@ -5,9 +5,9 @@ window.Doppel = (() => {
     droid: { name: 'DROID', robot: 'Franka', shift: 'A new lab' },
     bridge: { name: 'Bridge', robot: 'WidowX', shift: 'A new kitchen' },
     robomind: { name: 'RoboMIND', robot: 'UR5e', shift: 'New objects' },
-    abc: { name: 'ABC', robot: 'YAM', shift: 'Held-out tasks' },
-    trex: { name: 'T-Rex', robot: 'Vega-1', shift: 'Unseen wall backgrounds' },
-    egoexo4d: { name: 'Ego-Exo4D', robot: 'Human body', shift: 'Held-out tasks' },
+    abc: { name: 'ABC', robot: 'YAM', shift: 'Unseen tasks' },
+    trex: { name: 'T-Rex', robot: 'Vega-1', shift: 'Unseen backgrounds' },
+    egoexo4d: { name: 'Ego-Exo4D', robot: 'Human body', shift: 'Unseen tasks' },
     gigahands: { name: 'GigaHands', robot: 'Human hands', shift: 'Unseen activities' },
     oakink2: { name: 'OakInk2', robot: 'Human upper body', shift: 'Unseen tasks' },
   };
@@ -16,8 +16,8 @@ window.Doppel = (() => {
     action: { label: 'Action-only expert', short: 'Action-only', trained: 'This dataset', color: 'var(--action)', ink: 'var(--action-ink)' },
     oscar: { label: 'OSCAR (fine-tuned)', short: 'OSCAR (fine-tuned)', trained: 'This dataset', color: 'var(--oscar)' },
     doppel_single: { label: 'Doppel trained on this dataset', short: 'Doppel', trained: 'This dataset', color: 'var(--single)' },
-    doppel3: { label: 'Doppel trained on the 3 robot datasets', short: 'Doppel', trained: '3 robot datasets', color: 'var(--doppel)' },
-    doppel8: { label: 'Doppel trained on all 8 datasets', short: 'Doppel', trained: 'All 8 datasets', color: 'var(--doppel)' },
+    doppel3: { label: 'Doppel-3, trained on the 3 robot datasets', short: 'Doppel-3', trained: '3 robot datasets', color: 'var(--doppel)' },
+    doppel8: { label: 'Doppel-8, trained on all 8 datasets', short: 'Doppel-8', trained: 'All 8 datasets', color: 'var(--doppel)' },
     doppel: { label: 'Doppel', short: 'Doppel', color: 'var(--doppel)' },
   };
   const camel = s => s.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
@@ -65,12 +65,17 @@ window.Doppel = (() => {
     bar.className = 'timebar';
     bar.innerHTML = `<button type="button" class="tb-play"></button><input type="range" class="tb-range" min="0" value="0" step="${frames ? 1 : 0.01}" aria-label="${label} position"><span class="tb-time" aria-hidden="true"></span>${fullscreen ? `<button type="button" class="tb-full" aria-label="Full screen" title="Full screen">${ICON.full}</button>` : ''}`;
     const [button, range, readout] = bar.children;
-    let dragging = false, raf = 0;
+    let dragging = false, raf = 0, shown = null;
     const refresh = () => {
       const on = media.playing(), d = media.duration() || 0;
-      button.innerHTML = on ? ICON.pause : ICON.play;
-      button.setAttribute('aria-label', on ? 'Pause' : 'Play');
-      button.title = on ? 'Pause' : 'Play';
+      // Swap the icon only when the state changes: rebuilding it every frame removes the element under the pointer
+      // mid-click, and Safari then drops the click (so Pause never fired while a video was playing).
+      if (on !== shown) {
+        shown = on;
+        button.innerHTML = on ? ICON.pause : ICON.play;
+        button.setAttribute('aria-label', on ? 'Pause' : 'Play');
+        button.title = on ? 'Pause' : 'Play';
+      }
       const max = frames ? frames - 1 : d || 1, t = dragging ? Number(range.value) : Math.min(media.time(), max);
       range.max = max;
       if (!dragging) range.value = t;

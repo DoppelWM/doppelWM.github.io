@@ -25,7 +25,7 @@
     video: '<b>Recorded video.</b> The session\'s footage: what the rendering has to line up with.',
     compare: '<b>Compare with the video.</b> Scored on color, optical flow and DINOv2 features.',
     update: '<b>Update the camera.</b> The renderer is differentiable, so a gradient step moves the camera pose.',
-    out: '<b>Best pose.</b> The best of the parallel runs is kept for the whole recording session (UR5e, WidowX). ABC cameras are fitted per video to SAM 2 robot masks.',
+    out: '<b>Best pose.</b> The best of the parallel runs is kept for the whole recording session (UR5e, WidowX). ABC cameras are fitted per video to masks of the two arms and photometric agreement.',
   };
   function drawLoop(svg) {
     const C = window.DOPPEL_MEDIA.calibration;

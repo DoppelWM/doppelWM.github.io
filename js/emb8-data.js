@@ -425,7 +425,7 @@ window.DOPPEL_EMB8 = {
   },
   {
    "n": 3,
-   "dataset": "egoexo4d",
+   "dataset": "trex",
    "aspect": "16:9",
    "gt": "assets/emb8/long/03-gt.mp4",
    "render": "assets/emb8/long/03-render.mp4",

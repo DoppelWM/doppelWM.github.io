@@ -170,8 +170,9 @@ section { padding: 104px 0 0; }
 /* Claim clips from the film */
 .claim { margin: 0 0 40px; }
 .claim.setup { margin: 12px 0 64px; }
+.policy-tabs { display: flex; justify-content: center; margin: 0 0 18px; }
 /* The clip carries its own headline, so the caption is a capsule label and a short factual note. */
-.claim-caption { display: flex; align-items: flex-start; gap: 10px 18px; max-width: 1000px; padding: 20px 4px 0; }
+.claim-caption { display: flex; align-items: flex-start; justify-content: center; gap: 10px 18px; max-width: 1000px; margin: 0 auto; padding: 20px 4px 0; text-align: center; }
 .claim-caption .caps { flex: none; display: inline-flex; align-items: center; height: 26px; padding: 0 12px; border-radius: 999px; background: rgba(28, 34, 31, 0.92); border: 1px solid rgba(109, 164, 246, 0.45); font-size: 10.5px; color: var(--blue); white-space: nowrap; }
 .claim-caption p { font-size: 14.5px; line-height: 1.75; color: var(--ink-dim); }
 section > .claim:last-child { margin-bottom: 0; }
@@ -611,21 +612,21 @@ footer { margin-top: 104px; padding: 32px 0 calc(40px + env(safe-area-inset-bott
   .mv.emb8 .mv-row.doppel { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 
-/* Affiliations as numbered logos, in the paper's order and layout (JHU, CMU, TRI with thin rules between),
-   as light marks on the dark page. */
+/* Affiliations as numbered logos, in the paper's order and layout, with thin rules between them, as light marks on the
+   dark page. */
 .logos { display: flex; align-items: center; justify-content: center; gap: 26px; margin: 22px auto 0; }
 .logos img { display: block; width: auto; opacity: 0.9; }
-.logos .logo-jhu { height: 38px; }
-.logos .logo-cmu { height: 15px; opacity: 0.8; }
-.logos .logo-tri { height: 38px; opacity: 0.85; }
-.logos .logo-rule { width: 1px; height: 30px; background: rgba(255, 255, 255, 0.2); }
+.logos .logo-jhu { height: 36px; }
+.logos .logo-cmu { height: 19px; opacity: 0.85; }
+.logos .logo-tri { height: 46px; opacity: 0.85; }
+.logos .logo-rule { width: 1px; height: 34px; background: rgba(255, 255, 255, 0.2); }
 .logo-item { display: flex; align-items: flex-start; gap: 3px; }
 .logo-item sup { font-size: 12px; line-height: 1; margin: -2px 0 0; }
 @media (max-width: 760px) {
   .logos { gap: 11px; margin-top: 18px; }
-  .logos .logo-jhu { height: 23px; }
-  .logos .logo-cmu { height: 9px; }
-  .logos .logo-tri { height: 22px; }
+  .logos .logo-jhu { height: 21px; }
+  .logos .logo-cmu { height: 11px; }
+  .logos .logo-tri { height: 27px; }
   .logos .logo-rule { height: 20px; }
 }
 
